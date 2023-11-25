@@ -1,4 +1,12 @@
+using MySqlConnector;
+using System.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("MySQL");
+IDbConnection connection = new MySqlConnection(connectionString);
+
+builder.Services.AddSingleton<IDbConnection>(connection);
 
 // Add services to the container.
 
