@@ -1,6 +1,7 @@
 using Core;
 using Core.Domain.Repositories;
 using Core.Infra.Repositories;
+using Core.Presenters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MySqlConnector;
@@ -35,6 +36,11 @@ builder.Services
              ClockSkew = TimeSpan.Zero
          }
     );
+
+builder.Services.AddControllersWithViews(opt =>
+{
+    opt.Filters.Add<ExceptionMiddleware>();
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
