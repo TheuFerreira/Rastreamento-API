@@ -17,10 +17,9 @@ namespace Core.Presenters.Controllers
     {
         private readonly ISignUpCase signUpCase;
         
-        public RegisterController(IDbConnection connection)
+        public RegisterController(ISignUpCase signUpCase)
         {
-            IUserRepository userRepository = new UserRepository(connection);
-            signUpCase = new SignUpCase(userRepository);
+            this.signUpCase = signUpCase;
         }
 
         [HttpPost]

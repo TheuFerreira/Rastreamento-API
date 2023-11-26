@@ -25,6 +25,7 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
 // Use Cases
 builder.Services.AddSingleton<ISignInCase, SignInCase>();
+builder.Services.AddSingleton<ISignUpCase, SignUpCase>();
 
 // Add services to the container.
 // Isso aqui é para converter DateOnly, foi a forma que achei de lidar com o erro de serialization
