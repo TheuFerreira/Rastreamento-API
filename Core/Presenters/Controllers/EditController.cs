@@ -6,6 +6,7 @@ using Core.Presenters.Requests;
 using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 
 namespace Core.Presenters.Controllers
 {
@@ -16,11 +17,13 @@ namespace Core.Presenters.Controllers
     public class EditController : ControllerBase
     {
         private readonly IEditUserCase editUserCase;
+        private readonly IGetUserInfoCase getUserInfoCase;
         
-        public EditController(IDbConnection connection)
+        public EditController(IDbConnection connection, IGetUserInfoCase getUserInfoCase)
         {
             IUserRepository userRepository = new UserRepository(connection);
              editUserCase = new EditUserCase(userRepository);
+            this.getUserInfoCase = getUserInfoCase;
         }
 
         [HttpPut]
@@ -32,6 +35,17 @@ namespace Core.Presenters.Controllers
              SignUpResponse response = editUserCase.Execute(request);
              return Ok(response);
            // return Ok(new SignUpResponse());
+        }
+
+        [HttpGet]
+        [Route("Info")]
+        public IActionResult GetInfo()
+        {
+            ClaimsIdentity? identity = (ClaimsIdentity)HttpContext.User.Identity;
+            int userId = int.Parse(identity.FindFirst("UserId").Value);
+
+            UserInfoResponse response = getUserInfoCase.Execute(userId);
+            return Ok(response);
         }
     }
  

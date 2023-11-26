@@ -80,5 +80,21 @@ namespace Core.Infra.Repositories
             connection.Query(slq, data);
 
         }
+
+        public UserModel? GetById(int userId)
+        {
+            string sql = @"
+                SELECT id_user AS UserId, name AS FullName, email, birth_date AS BirthDate 
+                FROM users 
+                WHERE id_user = @userId;
+            ";
+            object data = new
+            {
+                userId
+            };
+
+            UserModel? model = connection.Query<UserModel>(sql, data).FirstOrDefault();
+            return model;
+        }
     }
 }
