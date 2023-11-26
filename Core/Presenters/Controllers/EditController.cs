@@ -7,6 +7,7 @@ using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Authentication;
 using System.Security.Claims;
 
 namespace Core.Presenters.Controllers
@@ -15,6 +16,7 @@ namespace Core.Presenters.Controllers
     [Route("[controller]")]
     [Authorize]
     [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class EditController : ControllerBase
     {
@@ -41,10 +43,13 @@ namespace Core.Presenters.Controllers
 
         [HttpGet]
         [Route("Info")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserInfoResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetInfo()
         {
-            ClaimsIdentity? identity = (ClaimsIdentity)HttpContext.User.Identity;
-            int userId = int.Parse(identity.FindFirst("UserId").Value);
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int userId = int.Parse(claimUserId.Value);
 
             UserInfoResponse response = getUserInfoCase.Execute(userId);
             return Ok(response);
