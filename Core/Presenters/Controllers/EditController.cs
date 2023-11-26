@@ -4,6 +4,7 @@ using Core.Infra.Repositories;
 using Core.Presenters.Cases;
 using Core.Presenters.Requests;
 using Core.Presenters.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
@@ -12,6 +13,7 @@ namespace Core.Presenters.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class EditController : ControllerBase
