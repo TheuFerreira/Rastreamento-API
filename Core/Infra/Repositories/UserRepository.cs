@@ -56,9 +56,17 @@ namespace Core.Infra.Repositories
             (@name, @email, MD5(@password), @birth_date, @created_at, @updated_at);
             ";
 
-            object data = new { name = user.FullName, email = user.Email, password = user.Password, birth_date = user.getBirthDateInDateTimeFormat(), created_at = DateTime.Now, updated_at = DateTime.Now };
+            object data = new 
+            { 
+                name = user.FullName, 
+                email = user.Email, 
+                password = user.Password, 
+                birth_date = user.getBirthDateInDateTimeFormat(), 
+                created_at = DateTime.UtcNow, 
+                updated_at = DateTime.UtcNow 
+            };
 
-            connection.Query<UserModel>(sql, data);
+            connection.Execute(sql, data);
         }
     }
 }
