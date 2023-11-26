@@ -7,6 +7,7 @@ CREATE TABLE users(
 	name VARCHAR(150) NOT NULL,
 	email VARCHAR(100) NOT NULL,
 	password VARCHAR(256) NOT NULL,
+	birth_date DATETIME NOT NULL, 
 	created_at DATETIME NOT NULL,
 	updated_at DATETIME NOT NULL
 );
