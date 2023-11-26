@@ -1,3 +1,5 @@
+using Core.Domain.Repositories;
+using Core.Infra.Repositories;
 using MySqlConnector;
 using System.Data;
 
@@ -7,6 +9,9 @@ string connectionString = builder.Configuration.GetConnectionString("MySQL");
 IDbConnection connection = new MySqlConnection(connectionString);
 
 builder.Services.AddSingleton<IDbConnection>(connection);
+
+// Repositories
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
 // Add services to the container.
 

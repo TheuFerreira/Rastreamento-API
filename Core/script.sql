@@ -1,0 +1,12 @@
+CREATE SCHEMA tracking;
+
+USE tracking;
+
+CREATE TABLE users(
+	id_user INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(150) NOT NULL,
+	email VARCHAR(100) NOT NULL,
+	password VARCHAR(256) NOT NULL,
+	created_at DATETIME NOT NULL,
+	updated_at DATETIME NOT NULL
+);
