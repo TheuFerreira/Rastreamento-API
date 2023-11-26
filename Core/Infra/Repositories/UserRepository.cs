@@ -17,10 +17,10 @@ namespace Core.Infra.Repositories
         public UserModel? GetByEmailAndPassword(string email, string password)
         {
             string sql = @"
-                SELECT id_user 
+                SELECT id_user AS UserId
                 FROM users 
                 WHERE BINARY email = @email 
-                    AND BINARY password = @password;
+                    AND BINARY password = MD5(@password);
             ";
             object data = new
             {
