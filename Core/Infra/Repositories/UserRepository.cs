@@ -68,5 +68,17 @@ namespace Core.Infra.Repositories
 
             connection.Execute(sql, data);
         }
+
+        public void Update(UserModel user)
+        {
+            string slq = @"update users " +
+            "set name = @name, email = @email, password = @password, birth_date = @birth_date, updated_at = @updated_at " +
+            "where id_user = @id_user;";
+
+            object data = new { id_user = user.UserId, name = user.FullName, email = user.Email, password = user.Password, birth_date = user.getBirthDateInDateTimeFormat(), updated_at = DateTime.Now };
+
+            connection.Query(slq, data);
+
+        }
     }
 }
