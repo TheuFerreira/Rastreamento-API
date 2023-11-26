@@ -29,7 +29,7 @@ namespace Core.Domain.Cases
 
             if (userAlreadyExists != null) throw new BadRequestException("e-mail já cadastrado!");
 
-            userRepository.Add(new Infra.Models.UserModel(request.Fullname, request.Email, request.Password, request.BirthDate));
+            userRepository.Add(new Infra.Models.UserModel(request.Fullname, request.Email, request.Password, request.BirthDate.ToDateTime(TimeOnly.MinValue)));
 
             SignUpResponse response = new()
             {

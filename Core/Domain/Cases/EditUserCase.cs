@@ -29,7 +29,7 @@ namespace Core.Domain.Cases
             var userAlreadyExists = userRepository.GetByEmail(request.Email);
 
             if (userAlreadyExists != null) throw new BadRequestException("e-mail já cadastrado!");
-            var user = new Infra.Models.UserModel(request.Fullname, request.Email, request.Password, request.BirthDate);
+            var user = new Infra.Models.UserModel(request.Fullname, request.Email, request.Password, request.BirthDate.ToDateTime(TimeOnly.MinValue));
             user.UserId = request.Id;
 
             userRepository.Update(user);

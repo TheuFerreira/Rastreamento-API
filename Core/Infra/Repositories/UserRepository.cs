@@ -61,7 +61,7 @@ namespace Core.Infra.Repositories
                 name = user.FullName, 
                 email = user.Email, 
                 password = user.Password, 
-                birth_date = user.getBirthDateInDateTimeFormat(), 
+                birth_date = user.GtBirthDateInDateTimeFormat(), 
                 created_at = DateTime.UtcNow, 
                 updated_at = DateTime.UtcNow 
             };
@@ -75,7 +75,7 @@ namespace Core.Infra.Repositories
             "set name = @name, email = @email, password = @password, birth_date = @birth_date, updated_at = @updated_at " +
             "where id_user = @id_user;";
 
-            object data = new { id_user = user.UserId, name = user.FullName, email = user.Email, password = user.Password, birth_date = user.getBirthDateInDateTimeFormat(), updated_at = DateTime.Now };
+            object data = new { id_user = user.UserId, name = user.FullName, email = user.Email, password = user.Password, birth_date = user.GtBirthDateInDateTimeFormat(), updated_at = DateTime.Now };
 
             connection.Query(slq, data);
 

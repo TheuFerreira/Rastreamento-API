@@ -23,7 +23,7 @@ namespace Core.Domain.Cases
             {
                 Email = model.Email,
                 FullName = model.FullName,
-                BirthDate = model.BirthDate,
+                BirthDate = model.GetDateFromBirthDate(),
             };
         }
     }
