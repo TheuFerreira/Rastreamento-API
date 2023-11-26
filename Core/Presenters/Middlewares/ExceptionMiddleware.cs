@@ -33,6 +33,16 @@ namespace Core.Presenters.Middlewares
                 return;
             }
 
+            if (exception is BadRequestException)
+            {
+                BadRequestObjectResult res = new(exception.Message)
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
+                context.Result = res;
+                return;
+            }
+
             BadRequestObjectResult badrequest = new(exception.Message)
             {
                 StatusCode = 500

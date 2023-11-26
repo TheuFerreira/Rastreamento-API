@@ -31,5 +31,34 @@ namespace Core.Infra.Repositories
             UserModel? userModel = connection.Query<UserModel>(sql, data).FirstOrDefault();
             return userModel;
         }
+
+        public UserModel? GetByEmail(string email)
+        {
+            string sql = @"
+            SELECT id_user AS UserId
+            FROM users
+            WHERE BINARY email = @email;
+            ";
+
+            object data = new { email };
+
+            UserModel? userModel = connection.Query<UserModel>(sql, data).FirstOrDefault();
+            return userModel;
+        }
+
+        public void Add(UserModel user)
+        {
+
+            string sql = @"
+            INSERT INTO 
+            users (name, email, password, birth_date, created_at, updated_at) 
+            VALUES 
+            (@name, @email, MD5(@password), @birth_date, @created_at, @updated_at);
+            ";
+
+            object data = new { name = user.FullName, email = user.Email, password = user.Password, birth_date = user.getBirthDateInDateTimeFormat(), created_at = DateTime.Now, updated_at = DateTime.Now };
+
+            connection.Query<UserModel>(sql, data);
+        }
     }
 }

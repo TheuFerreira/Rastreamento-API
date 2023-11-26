@@ -22,6 +22,12 @@ builder.Services.AddSingleton<JWTModel>(jwt);
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
 // Add services to the container.
+// Isso aqui é para converter DateOnly, foi a forma que achei de lidar com o erro de serialization
+builder.Services.AddControllers()
+               .AddJsonOptions(options =>
+               {
+                   options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+               });
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
