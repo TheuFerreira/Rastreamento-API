@@ -45,16 +45,18 @@ namespace Core.Domain.Cases
             {
                 new Claim("UserId", userId.ToString()),
             };
-            SymmetricSecurityKey securityKey = new(key);
-            SigningCredentials creds = new(securityKey, SecurityAlgorithms.HmacSha256);
 
-            JwtSecurityToken token = new(
-               claims: claims,
-               expires: expiresAt,
-               signingCredentials: creds
-            );
+            JwtSecurityTokenHandler tokenHandler = new();
+            SecurityTokenDescriptor tokenDescriptor = new()
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = expiresAt,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            };
+            SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            string token = tokenHandler.WriteToken(securityToken);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return token;
         }
     }
 }
