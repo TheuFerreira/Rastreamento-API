@@ -1,6 +1,8 @@
 using Core;
+using Core.Domain.Cases;
 using Core.Domain.Repositories;
 using Core.Infra.Repositories;
+using Core.Presenters.Cases;
 using Core.Presenters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +22,9 @@ builder.Services.AddSingleton<JWTModel>(jwt);
 
 // Repositories
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+
+// Use Cases
+builder.Services.AddSingleton<ISignInCase, SignInCase>();
 
 // Add services to the container.
 // Isso aqui é para converter DateOnly, foi a forma que achei de lidar com o erro de serialization

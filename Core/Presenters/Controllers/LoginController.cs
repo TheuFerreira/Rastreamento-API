@@ -1,12 +1,8 @@
-﻿using Core.Domain.Cases;
-using Core.Domain.Repositories;
-using Core.Infra.Repositories;
-using Core.Presenters.Cases;
+﻿using Core.Presenters.Cases;
 using Core.Presenters.Requests;
 using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace Core.Presenters.Controllers
 {
@@ -18,10 +14,9 @@ namespace Core.Presenters.Controllers
     {
         private readonly ISignInCase signInCase;
 
-        public LoginController(IDbConnection connection, JWTModel jwtModel)
+        public LoginController(ISignInCase signInCase)
         {
-            IUserRepository userRepository = new UserRepository(connection);
-            signInCase = new SignInCase(userRepository, jwtModel);
+            this.signInCase = signInCase;
         }
 
         [HttpPost]
