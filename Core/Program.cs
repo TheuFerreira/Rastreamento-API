@@ -25,6 +25,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 // Use Cases
 builder.Services.AddTransient<ISignInCase, SignInCase>();
+builder.Services.AddTransient<ISignUpCase, SignUpCase>();
 builder.Services.AddTransient<IGetUserInfoCase, GetUserInfoCase>();
 
 // Add services to the container.
@@ -69,6 +70,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
