@@ -24,11 +24,13 @@ builder.Services.AddSingleton<JWTModel>(jwt);
 
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IDeliveryRepository, DeliveryRepository>();
 
 // Use Cases
 builder.Services.AddTransient<ISignInCase, SignInCase>();
 builder.Services.AddTransient<ISignUpCase, SignUpCase>();
 builder.Services.AddTransient<IGetUserInfoCase, GetUserInfoCase>();
+builder.Services.AddTransient<IAddDeliveryCase, AddDeliveryCase>();
 
 // Add services to the container.
 // Isso aqui é para converter DateOnly, foi a forma que achei de lidar com o erro de serialization

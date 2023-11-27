@@ -7,6 +7,11 @@
         public string Description { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
+        public string DeliveryCode { get; set; }
+        
+        public int? CostumerId { get; set; }
+        public int? CourierId { get; set; }
+
 
         public DeliveryModel() 
         {
@@ -14,15 +19,17 @@
             Description = string.Empty;
             Origin = string.Empty;
             Destination = string.Empty;
+            DeliveryCode = string.Empty;
         }
 
-        public DeliveryModel(int deliveryId, string observation, string description, string origin, string destination)
+        public DeliveryModel(string observation, string description, string deliveryCode, string origin, string destination, int courierId)
         {
-            DeliveryId=deliveryId;
             Observation=observation;
             Description=description;
             Origin=origin;
+            DeliveryCode= deliveryCode;
             Destination=destination;
+            CourierId=courierId;
         }
     }
 }
