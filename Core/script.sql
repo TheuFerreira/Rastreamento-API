@@ -19,12 +19,14 @@ CREATE TABLE delivery (
 	origin VARCHAR(200) NOT NULL,
 	destiny VARCHAR(200) NOT NULL,
 	observation VARCHAR(200) NULL,
-	code VARCHAR(16) NOT NULL
+	code VARCHAR(16) NOT NULL,
+	created_at DATETIME NOT NULL
 );
 
 CREATE TABLE user_has_delivery(
 	id_delivery INT NOT NULL,
 	id_user INT NOT NULL,
+	created_at DATETIME NOT NULL,
 
 	PRIMARY KEY (id_delivery, id_user)
 );
