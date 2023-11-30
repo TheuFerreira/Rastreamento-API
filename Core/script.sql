@@ -20,7 +20,8 @@ CREATE TABLE delivery (
 	destiny VARCHAR(200) NOT NULL,
 	observation VARCHAR(200) NULL,
 	code VARCHAR(16) NOT NULL,
-	created_at DATETIME NOT NULL
+	created_at DATETIME NOT NULL,
+	last_update_date DATETIME NOT NULL
 );
 
 CREATE TABLE user_has_delivery(
