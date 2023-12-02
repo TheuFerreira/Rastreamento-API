@@ -31,3 +31,8 @@ CREATE TABLE user_has_delivery(
 
 	PRIMARY KEY (id_delivery, id_user)
 );
+
+
+ALTER TABLE `tracking`.`delivery` 
+CHANGE COLUMN `code` `code` VARCHAR(64) NOT NULL ;
+
