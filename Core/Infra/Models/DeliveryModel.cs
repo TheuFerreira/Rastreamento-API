@@ -8,8 +8,6 @@
         public string Origin { get; set; }
         public string Destination { get; set; }
         public string DeliveryCode { get; set; }
-        
-        public int? CostumerId { get; set; }
         public int? CourierId { get; set; }
 
 

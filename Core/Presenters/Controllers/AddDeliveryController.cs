@@ -1,7 +1,10 @@
 ﻿using Core.Presenters.Cases;
 using Core.Presenters.Requests;
 using Core.Presenters.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace Core.Presenters.Controllers
 {
@@ -24,7 +27,10 @@ namespace Core.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Index(AddDeliveryRequest request)
         {
-            addDeliveryCase.Execute(new Infra.Models.DeliveryModel(request.Observation, request.Description, request.Origin, request.DeliveryCode, request.Destination, request.CourierId));
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int courierId = int.Parse(claimUserId.Value);
+            addDeliveryCase.Execute(new Infra.Models.DeliveryModel(request.Observation, request.Description, request.Origin, request.DeliveryCode, request.Destination, courierId));
             return Ok();
         }
     }
