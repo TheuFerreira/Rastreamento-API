@@ -30,7 +30,7 @@ namespace Core.Presenters.Controllers
             ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
             Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
             int courierId = int.Parse(claimUserId.Value);
-            addDeliveryCase.Execute(new Infra.Models.DeliveryModel(request.Observation, request.Description, request.Origin, request.DeliveryCode, request.Destination, courierId));
+            addDeliveryCase.Execute(new Infra.Models.DeliveryModel(request.Observation, request.Description, request.Origin, request.Destination, courierId));
             return Ok();
         }
     }
