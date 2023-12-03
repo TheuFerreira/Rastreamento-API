@@ -20,13 +20,13 @@
             DeliveryCode = string.Empty;
         }
 
-        public DeliveryModel(string observation, string description, string deliveryCode, string origin, string destination, int courierId)
+        public DeliveryModel(string observation, string description, string origin, string destination, int courierId)
         {
             Observation=observation;
             Description=description;
             Origin=origin;
-            DeliveryCode= deliveryCode;
             Destination=destination;
+            DeliveryCode = string.Empty;
             CourierId=courierId;
         }
     }

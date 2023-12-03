@@ -1,7 +1,9 @@
 using Core;
 using Core.Domain.Cases;
 using Core.Domain.Repositories;
+using Core.Domain.Services;
 using Core.Infra.Repositories;
+using Core.Infra.Services;
 using Core.Presenters.Cases;
 using Core.Presenters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +23,10 @@ IDbConnection connection = new MySqlConnection(connectionString);
 
 builder.Services.AddSingleton<IDbConnection>(connection);
 builder.Services.AddSingleton<JWTModel>(jwt);
+
+// Services
+
+builder.Services.AddTransient<IGenerateDeliveryCodeService, GenerateDeliveryCodeService>();
 
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
