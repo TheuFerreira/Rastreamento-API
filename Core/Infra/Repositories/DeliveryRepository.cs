@@ -23,14 +23,28 @@ namespace Core.Infra.Repositories
                 origin = delivery.Origin,
                 destiny = delivery.Destination,
                 observation = delivery.Observation,
-                code = delivery.DeliveryCode,
+                code = delivery.Code,
                 created_at = DateTime.UtcNow,
                 last_update_date = DateTime.UtcNow,
-
             };
 
             connection.Execute(sql, data);
+        }
 
+        public IEnumerable<DeliveryModel> GetByCode(string code)
+        {
+            string sql = @"
+                SELECT id_delivery AS DeliveryId, description, origin, destiny AS Destination, observation, code, last_update_date AS LastUpdateDate 
+                FROM delivery 
+                WHERE BINARY code = @code;
+            ";
+            object data = new
+            {
+                code,
+            };
+
+            IEnumerable<DeliveryModel> model = connection.Query<DeliveryModel>(sql, data);
+            return model;
         }
     }
 }
