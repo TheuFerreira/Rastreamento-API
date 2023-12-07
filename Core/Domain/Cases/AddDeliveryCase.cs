@@ -1,8 +1,6 @@
 ﻿using Core.Domain.Exceptions;
 using Core.Domain.Repositories;
-using Core.Domain.Services;
 using Core.Infra.Models;
-using Core.Infra.Services;
 using Core.Presenters.Cases;
 
 namespace Core.Domain.Cases
@@ -11,12 +9,10 @@ namespace Core.Domain.Cases
     {
         private readonly IDeliveryRepository deliveryRepository;
         private readonly IUserRepository userRepository;
-        private readonly IGenerateDeliveryCodeService generateDeliveryCodeService;
-        public AddDeliveryCase(IDeliveryRepository deliveryRepository, IUserRepository userRepository, IGenerateDeliveryCodeService generateDeliveryCodeService) 
+        public AddDeliveryCase(IDeliveryRepository deliveryRepository, IUserRepository userRepository) 
         {
             this.deliveryRepository = deliveryRepository;
             this.userRepository = userRepository;
-            this.generateDeliveryCodeService = generateDeliveryCodeService;
         }
 
         public void Execute(DeliveryModel model)
@@ -34,7 +30,7 @@ namespace Core.Domain.Cases
 
             if (userRepository.GetById((int)model.CourierId) == null) throw new NotFoundException();
 
-            model.DeliveryCode = generateDeliveryCodeService.GenerateDeliveryCode();
+            model.Code = Guid.NewGuid().ToString().ToString();
 
             this.deliveryRepository.Add(model);
             
