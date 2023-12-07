@@ -32,5 +32,26 @@ namespace Core.Infra.Repositories
             connection.Execute(sql, data);
 
         }
+
+        public DeliveryModel? GetById(int Id)
+        {
+            string sql =
+            @"
+                SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination 
+                FROM delivery AS D 
+                WHERE D.id_delivery = @Id;
+                    
+            ";
+
+            object data = new
+            {
+                Id,
+            };
+            connection.Execute(sql, data);
+
+            DeliveryModel? model = connection.Query<DeliveryModel>(sql, data).FirstOrDefault();
+            return model;
+
+        }
     }
 }
