@@ -10,7 +10,7 @@ namespace Core.Infra.Models
         public string Destination { get; set; }
         public string Code { get; set; }
         public DateTime LastUpdateTime { get; set; }
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
 
         public DeliveryModel() 
@@ -20,7 +20,6 @@ namespace Core.Infra.Models
             Origin = string.Empty;
             Destination = string.Empty;
             Code = string.Empty;
-            CreatedAt = string.Empty;
         }
 
         public DeliveryModel(string observation, string description, string origin, string destination, int courierId)
@@ -31,8 +30,6 @@ namespace Core.Infra.Models
             Destination=destination;
             Code = string.Empty;
             CourierId=courierId;
-            CreatedAt = string.Empty;
-            UpdatedAt = string.Empty;
         }
     }
 }

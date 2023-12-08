@@ -22,8 +22,8 @@ namespace Core.Domain.Cases
 
             return new BasicDeliveryResponse()
             {
-                LastUpdate = delivery.UpdatedAt,
-                CreatedDate= delivery.CreatedAt,
+                LastUpdate = delivery.LastUpdateTime,
+                CreatedDate = delivery.CreatedAt,
                 Destiny = delivery.Destination
             };
         }
