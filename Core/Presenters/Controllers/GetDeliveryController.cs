@@ -5,6 +5,7 @@ using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace Core.Presenters.Controllers
 {
@@ -15,20 +16,37 @@ namespace Core.Presenters.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class GetDeliveryController : ControllerBase
     {
-        private readonly IGetNotSavedDelivery getNotSavedDelivery;
+        private readonly IGetNotSavedDeliveryCase getNotSavedDeliveryCase;
+        private readonly IGetSavedDeliveryCase getSavedDeliveryCase;
 
-        public GetDeliveryController(IGetNotSavedDelivery getNotSavedDelivery)
+        public GetDeliveryController(IGetNotSavedDeliveryCase getNotSavedDeliveryCase, IGetSavedDeliveryCase getSavedDeliveryCase)
         {
-            this.getNotSavedDelivery = getNotSavedDelivery;
+            this.getNotSavedDeliveryCase = getNotSavedDeliveryCase;
+            this.getSavedDeliveryCase = getSavedDeliveryCase;
         }
 
         [HttpGet]
-        [Route("/NotSaved/{Id}")]
+        [Route("/NotSaved/{DeliveryId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasicDeliveryResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetNotSavedDelivery(int Id)
+        public IActionResult GetNotSavedDelivery(int DeliveryId)
         {
-            BasicDeliveryResponse response = getNotSavedDelivery.Execute(Id) ?? throw new NotFoundException(); ;
+            BasicDeliveryResponse response = getNotSavedDeliveryCase.Execute(DeliveryId) ?? throw new NotFoundException(); ;
+
+            return Ok(response);
+        }
+
+
+        [HttpGet]
+        [Route("/Saved/{DeliveryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasicDeliveryResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetSavedDelivery(int DeliveryId) 
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int ClientId = int.Parse(claimUserId.Value);
+            BasicDeliveryResponse response = getSavedDeliveryCase.Execute(DeliveryId, ClientId);
 
             return Ok(response);
         }
@@ -37,5 +55,5 @@ namespace Core.Presenters.Controllers
 
     }
 
-    
+
 }

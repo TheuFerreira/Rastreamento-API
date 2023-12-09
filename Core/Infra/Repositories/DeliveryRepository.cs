@@ -1,6 +1,7 @@
 ﻿using Core.Domain.Repositories;
 using Core.Infra.Models;
 using Dapper;
+using System;
 using System.Data;
 
 namespace Core.Infra.Repositories
@@ -66,6 +67,27 @@ namespace Core.Infra.Repositories
             DeliveryModel? model = connection.Query<DeliveryModel>(sql, data).FirstOrDefault();
             return model;
 
+        }
+        public DeliveryModel? GetDeliveryByClientId(int DeliveryId, int ClientId)
+        {
+            string sql =
+            @"
+                SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination 
+                FROM delivery AS D 
+                INNER JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
+                WHERE UD.id_delivery = @DeliveryId AND UD.id_user = @ClientId;
+                    
+            ";
+
+            object data = new
+            {
+                ClientId,
+                DeliveryId
+            };
+            connection.Execute(sql, data);
+
+            DeliveryModel? model = connection.Query<DeliveryModel>(sql, data).FirstOrDefault();
+            return model;
         }
     }
 }
