@@ -3,7 +3,7 @@ using Core.Presenters.Responses;
 
 namespace Core.Presenters.Cases
 {
-    public interface IGetNotSavedDelivery
+    public interface IGetNotSavedDeliveryCase
     {
         BasicDeliveryResponse Execute(int id);
     }

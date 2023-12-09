@@ -7,10 +7,10 @@ using Core.Presenters.Responses;
 
 namespace Core.Domain.Cases
 {
-    public class GetNotSavedDelivery : IGetNotSavedDelivery
+    public class GetNotSavedDeliveryCase : IGetNotSavedDeliveryCase
     {
         private readonly IDeliveryRepository repository;
-        public GetNotSavedDelivery(IDeliveryRepository repository) 
+        public GetNotSavedDeliveryCase(IDeliveryRepository repository) 
         {
             this.repository = repository;
         }
