@@ -22,11 +22,11 @@ namespace Core.Presenters.Controllers
     {
         private readonly IEditUserCase editUserCase;
         private readonly IGetUserInfoCase getUserInfoCase;
-        
+
         public EditController(IDbConnection connection, IGetUserInfoCase getUserInfoCase)
         {
             IUserRepository userRepository = new UserRepository(connection);
-             editUserCase = new EditUserCase(userRepository);
+            editUserCase = new EditUserCase(userRepository);
             this.getUserInfoCase = getUserInfoCase;
         }
 
@@ -36,9 +36,9 @@ namespace Core.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult EditUser(EditUserRequest request)
         {
-             SignUpResponse response = editUserCase.Execute(request);
-             return Ok(response);
-           // return Ok(new SignUpResponse());
+            SignUpResponse response = editUserCase.Execute(request);
+            return Ok(response);
+            // return Ok(new SignUpResponse());
         }
 
         [HttpGet]
@@ -55,5 +55,5 @@ namespace Core.Presenters.Controllers
             return Ok(response);
         }
     }
- 
+
 }

@@ -7,9 +7,7 @@ using Core.Infra.Services;
 using Core.Presenters.Cases;
 using Core.Presenters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using System.Data;
 using System.Text;
@@ -43,69 +41,39 @@ builder.Services.AddTransient<IGetSavedDeliveryCase, GetSavedDeliveryCase>();
 
 // Add services to the container.
 // Isso aqui � para converter DateOnly, foi a forma que achei de lidar com o erro de serialization
-builder.Services.AddControllers()
-               .AddJsonOptions(options =>
-               {
-                   options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
-               });
-
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition(
-        "Bearer",
-        new OpenApiSecurityScheme
-        {
-            Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-            Name = "Authorization",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey
-        }
-    );
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                },
-                Array.Empty<string>()
-
-        }
-    });
-});
-
 builder.Services
-    .AddAuthentication(x =>
+    .AddControllers()
+    .AddJsonOptions(options =>
     {
-        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+    });
+
+// Adding Authentication
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer(x =>
+    .AddJwtBearer(options =>
     {
-        x.RequireHttpsMetadata = false;
-        x.SaveToken = true;
-        x.TokenValidationParameters = new TokenValidationParameters
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateLifetime = true,
-            LifetimeValidator = (DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters) =>
-            {
-                return expires >= DateTime.UtcNow;
-            },
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key))
         };
     });
 
-builder.Services.AddControllersWithViews(opt =>
-{
-    opt.Filters.Add<ExceptionMiddleware>();
-});
+// Middleware de exceção
+builder.Services
+    .AddControllersWithViews(opt =>
+    {
+        opt.Filters.Add<ExceptionMiddleware>();
+    });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -123,10 +91,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
