@@ -38,6 +38,7 @@ namespace Core.Presenters.Controllers
 
 
         [HttpGet]
+        [Authorize]
         [Route("/Saved/{DeliveryId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasicDeliveryResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
