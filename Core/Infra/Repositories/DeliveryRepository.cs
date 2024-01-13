@@ -54,7 +54,7 @@ namespace Core.Infra.Repositories
             @"
                 SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination 
                 FROM delivery AS D 
-                WHERE D.id_delivery = @Id;
+                WHERE D.id_delivery = @Id AND @Id NOT IN (SELECT UD.id_delivery FROM user_has_delivery as UD);
                     
             ";
 
@@ -72,12 +72,14 @@ namespace Core.Infra.Repositories
         {
             string sql =
             @"
-                SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination 
+                SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination, D.origin AS Origin, D.status AS STATUS
                 FROM delivery AS D 
                 INNER JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
                 WHERE UD.id_delivery = @DeliveryId AND UD.id_user = @ClientId;
                     
             ";
+
+
 
             object data = new
             {

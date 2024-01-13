@@ -38,6 +38,7 @@ builder.Services.AddTransient<IAddDeliveryCase, AddDeliveryCase>();
 builder.Services.AddTransient<ISearchDeliveryCase, SearchDeliveryCase>();
 builder.Services.AddTransient<IGetNotSavedDeliveryCase, GetNotSavedDeliveryCase>();
 builder.Services.AddTransient<IGetSavedDeliveryCase, GetSavedDeliveryCase>();
+builder.Services.AddTransient<IGetDetailedSavedDeliveryCase, GetDetailedSavedDelivery>();
 
 // Add services to the container.
 // Isso aqui � para converter DateOnly, foi a forma que achei de lidar com o erro de serialization

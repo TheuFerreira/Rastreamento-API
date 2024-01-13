@@ -18,11 +18,13 @@ namespace Core.Presenters.Controllers
     {
         private readonly IGetNotSavedDeliveryCase getNotSavedDeliveryCase;
         private readonly IGetSavedDeliveryCase getSavedDeliveryCase;
+        private readonly IGetDetailedSavedDeliveryCase getDetailedSavedDeliveryCase;
 
-        public GetDeliveryController(IGetNotSavedDeliveryCase getNotSavedDeliveryCase, IGetSavedDeliveryCase getSavedDeliveryCase)
+        public GetDeliveryController(IGetNotSavedDeliveryCase getNotSavedDeliveryCase, IGetSavedDeliveryCase getSavedDeliveryCase, IGetDetailedSavedDeliveryCase getDetailedSavedDeliveryCase)
         {
             this.getNotSavedDeliveryCase = getNotSavedDeliveryCase;
             this.getSavedDeliveryCase = getSavedDeliveryCase;
+            this.getDetailedSavedDeliveryCase = getDetailedSavedDeliveryCase;
         }
 
         [HttpGet]
@@ -52,7 +54,20 @@ namespace Core.Presenters.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("/Saved/Detailed/{DeliveryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DetailedDeliveryResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetSavedDeliveryDetais(int DeliveryId)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int UserId = int.Parse(claimUserId.Value);
+            DetailedDeliveryResponse response = getDetailedSavedDeliveryCase.Execute(DeliveryId, UserId);
 
+            return Ok(response);
+        }
 
     }
 
