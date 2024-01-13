@@ -32,7 +32,7 @@ namespace Core.Infra.Models
             Destination=destination;
             Code=string.Empty;
             CourierId=courierId;
-            Status="Objeto Postado";
+            Status=String.Empty;
         }
     }
 }

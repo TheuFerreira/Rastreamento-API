@@ -30,6 +30,7 @@ namespace Core.Domain.Cases
 
             if (userRepository.GetById((int)model.CourierId) == null) throw new NotFoundException();
 
+            model.Status = "Objeto Postado";
             model.Code = Guid.NewGuid().ToString().ToString();
 
             this.deliveryRepository.Add(model);

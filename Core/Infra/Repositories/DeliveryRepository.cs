@@ -15,7 +15,7 @@ namespace Core.Infra.Repositories
         }
         public void Add(DeliveryModel delivery)
         {
-            string sql = @"INSERT INTO delivery (id_user, description, origin, destiny, observation, code, created_at, last_update_date) VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date);";
+            string sql = @"INSERT INTO delivery (id_user, description, origin, destiny, observation, code, created_at, last_update_date, status) VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date, @status);";
        
             object data = new
             {
@@ -27,6 +27,7 @@ namespace Core.Infra.Repositories
                 code = delivery.Code,
                 created_at = DateTime.UtcNow,
                 last_update_date = DateTime.UtcNow,
+                status = delivery.Status
             };
 
             connection.Execute(sql, data);
