@@ -7,7 +7,6 @@ namespace Core.Domain.Repositories
         void Add(DeliveryModel delivery);
         IEnumerable<DeliveryModel> GetByCode(string code);
         DeliveryModel? GetById(int Id);
-
         DeliveryModel? GetDeliveryByClientId(int DeliveryId, int ClientId);
     }
 }

@@ -36,7 +36,7 @@ namespace Core.Infra.Repositories
         public IEnumerable<DeliveryModel> GetByCode(string code)
         {
             string sql = @"
-                SELECT id_delivery AS DeliveryId, description, origin, destiny AS Destination, observation, code, last_update_date AS LastUpdateDate 
+                SELECT id_delivery AS DeliveryId, description, origin, destiny AS Destination, observation, code, last_update_date AS LastUpdateTime 
                 FROM delivery 
                 WHERE BINARY code = @code;
             ";

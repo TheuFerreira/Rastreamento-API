@@ -22,6 +22,7 @@ namespace Core.Domain.Cases
             {
                 Code = x.Code,
                 DeliveryId = x.DeliveryId,
+                LastUpdateTime = x.LastUpdateTime
             });
             return responses;
         }

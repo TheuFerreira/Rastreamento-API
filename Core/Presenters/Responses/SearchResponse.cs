@@ -8,7 +8,7 @@ namespace Core.Presenters.Responses
         public int DeliveryId { get; set; }
         public string Code { get; set; } = string.Empty;
 
-        [JsonPropertyName("last_update_date")]
-        public DateTime LastUpdateDate { get; set; }
+        [JsonPropertyName("last_update_time")]
+        public DateTime LastUpdateTime { get; set; }
     }
 }
