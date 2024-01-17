@@ -92,5 +92,22 @@ namespace Core.Infra.Repositories
             DeliveryModel? model = connection.Query<DeliveryModel>(sql, data).FirstOrDefault();
             return model;
         }
+
+        public void UpdateStatus(int deliveryId, int status, DateTime currentTime)
+        {
+            string sql = @"
+                UPDATE delivery 
+                SET status = @status, last_update_date = @currentTime 
+                WHERE id_delivery = @deliveryId;
+            ";
+            object data = new
+            {
+                status, 
+                currentTime,
+                deliveryId
+            };
+
+            connection.Execute(sql, data);
+        }
     }
 }

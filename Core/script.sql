@@ -37,3 +37,5 @@ CREATE TABLE user_has_delivery(
 ALTER TABLE `tracking`.`delivery` 
 CHANGE COLUMN `code` `code` VARCHAR(64) NOT NULL ;
 
+ALTER TABLE delivery
+ADD COLUMN status INT NOT NULL DEFAULT 0 AFTER last_update_date;

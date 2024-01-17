@@ -2,7 +2,6 @@
 using Core.Domain.Repositories;
 using Core.Presenters.Cases;
 using Core.Presenters.Responses;
-using System.Net.NetworkInformation;
 
 namespace Core.Domain.Cases
 {
@@ -11,7 +10,7 @@ namespace Core.Domain.Cases
 
         private readonly IDeliveryRepository deliveryRepository;
 
-        public GetDetailedSavedDelivery(IDeliveryRepository deliveryRepository) 
+        public GetDetailedSavedDelivery(IDeliveryRepository deliveryRepository)
         {
             this.deliveryRepository = deliveryRepository;
         }
@@ -21,13 +20,13 @@ namespace Core.Domain.Cases
             var delivery = deliveryRepository.GetDeliveryByClientId(Deliveryid, UserId) ?? throw new NotFoundException();
             return new DetailedDeliveryResponse()
             {
-                Destiny=delivery.Destination,
-                Origin=delivery.Origin,
-                CurrentStatus=delivery.Status,
-                LastUpdate=delivery.LastUpdateTime,
-                CreatedDate=delivery.CreatedAt
+                Destiny = delivery.Destination,
+                Origin = delivery.Origin,
+                CurrentStatus = delivery.Status,
+                LastUpdate = delivery.LastUpdateTime,
+                CreatedDate = delivery.CreatedAt
             };
-            
+
         }
     }
 }
