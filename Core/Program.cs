@@ -82,6 +82,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// RUN IN LOCAL IP
+builder.WebHost.UseUrls("http://*:5566");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
