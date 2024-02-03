@@ -69,6 +69,27 @@ namespace Core.Infra.Repositories
             return model;
 
         }
+
+        public IEnumerable<DeliveryModel> GetDeliveriesByUserId(int UserId)
+        {
+            string sql =
+            @"
+                SELECT D.id_delivery AS DeliveryId, U.id_user AS CourierId, D.description, D.origin, D.destiny AS Destination, D.code, D.observation, D.status, D.last_update_date AS LastUpdateTime, D.created_at AS CreatedAt
+                FROM delivery AS D
+                JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
+                JOIN users AS U on UD.id_user = U.id_user
+                WHERE BINARY U.id_user = @UserId;
+            ";
+            object data = new
+            {
+                UserId,
+            };
+
+            IEnumerable<DeliveryModel> model = connection.Query<DeliveryModel>(sql, data);
+            return model;
+
+        }
+
         public DeliveryModel? GetDeliveryByClientId(int DeliveryId, int ClientId)
         {
             string sql =

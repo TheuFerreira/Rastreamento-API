@@ -19,12 +19,20 @@ namespace Core.Presenters.Controllers
         private readonly IGetNotSavedDeliveryCase getNotSavedDeliveryCase;
         private readonly IGetSavedDeliveryCase getSavedDeliveryCase;
         private readonly IGetDetailedSavedDeliveryCase getDetailedSavedDeliveryCase;
+        private readonly IGetCourierDeliveriesCase getCourierDeliveriesCase;
 
-        public GetDeliveryController(IGetNotSavedDeliveryCase getNotSavedDeliveryCase, IGetSavedDeliveryCase getSavedDeliveryCase, IGetDetailedSavedDeliveryCase getDetailedSavedDeliveryCase)
+        public GetDeliveryController
+            (
+                IGetNotSavedDeliveryCase getNotSavedDeliveryCase, 
+                IGetSavedDeliveryCase getSavedDeliveryCase, 
+                IGetDetailedSavedDeliveryCase getDetailedSavedDeliveryCase,
+                IGetCourierDeliveriesCase getCourierDeliveriesCase
+            )
         {
             this.getNotSavedDeliveryCase = getNotSavedDeliveryCase;
             this.getSavedDeliveryCase = getSavedDeliveryCase;
             this.getDetailedSavedDeliveryCase = getDetailedSavedDeliveryCase;
+            this.getCourierDeliveriesCase = getCourierDeliveriesCase;
         }
 
         [HttpGet]
@@ -65,6 +73,21 @@ namespace Core.Presenters.Controllers
             Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
             int UserId = int.Parse(claimUserId.Value);
             DetailedDeliveryResponse response = getDetailedSavedDeliveryCase.Execute(DeliveryId, UserId);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("/Saved")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourierDeliveriesResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetCourierDeliveries(int DeliveryId)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int UserId = int.Parse(claimUserId.Value);
+            CourierDeliveriesResponse response = getCourierDeliveriesCase.Execute(UserId);
 
             return Ok(response);
         }
