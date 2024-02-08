@@ -1,6 +1,7 @@
-﻿using Core.Presenters.Cases;
+﻿using Core.Infra.Models;
+using Core.Presenters.Cases;
 using Core.Presenters.Requests;
-using Microsoft.AspNetCore.Authorization;
+using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -22,7 +23,7 @@ namespace Core.Presenters.Controllers
 
         [HttpPost]
         [Route("Add")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddDeliveryResponse))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Index(AddDeliveryRequest request)
@@ -30,8 +31,11 @@ namespace Core.Presenters.Controllers
             ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
             Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
             int userId = int.Parse(claimUserId.Value);
-            addDeliveryCase.Execute(new Infra.Models.DeliveryModel(request.Observation, request.Description, request.Origin, request.Destination, userId));
-            return Ok();
+
+            DeliveryModel model = new(request.Observation, request.Description, request.Origin, request.Destination, userId);
+            AddDeliveryResponse response = addDeliveryCase.Execute(model);
+
+            return Ok(response);
         }
     }
 }

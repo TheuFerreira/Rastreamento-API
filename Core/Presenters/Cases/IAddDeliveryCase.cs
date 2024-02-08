@@ -1,9 +1,10 @@
 ﻿using Core.Infra.Models;
+using Core.Presenters.Responses;
 
 namespace Core.Presenters.Cases
 {
     public interface IAddDeliveryCase
     {
-        void Execute(DeliveryModel model);
+        AddDeliveryResponse Execute(DeliveryModel model);
     }
 }

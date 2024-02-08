@@ -1,7 +1,9 @@
 ﻿using Core.Domain.Exceptions;
 using Core.Domain.Repositories;
+using Core.Domain.Services;
 using Core.Infra.Models;
 using Core.Presenters.Cases;
+using Core.Presenters.Responses;
 
 namespace Core.Domain.Cases
 {
@@ -9,20 +11,23 @@ namespace Core.Domain.Cases
     {
         private readonly IDeliveryRepository deliveryRepository;
         private readonly IUserRepository userRepository;
-        public AddDeliveryCase(IDeliveryRepository deliveryRepository, IUserRepository userRepository) 
+        private readonly IGenerateDeliveryCodeService generateDeliveryCodeService;
+
+        public AddDeliveryCase(IDeliveryRepository deliveryRepository, IUserRepository userRepository, IGenerateDeliveryCodeService generateDeliveryCodeService)
         {
             this.deliveryRepository = deliveryRepository;
             this.userRepository = userRepository;
+            this.generateDeliveryCodeService = generateDeliveryCodeService;
         }
 
-        public void Execute(DeliveryModel model)
+        public AddDeliveryResponse Execute(DeliveryModel model)
         {
+            if (model == null) throw new ArgumentNullException();
 
-            if(model == null) throw new ArgumentNullException("model");
             if (
                 model.Destination == null
                 || model.Observation == null
-                //|| model.CostumerId == null Verificar se o cliente vai ser definido na hora de cadastrar o pacote
+                //TODO: || model.CostumerId == null Verificar se o cliente vai ser definido na hora de cadastrar o pacote
                 || model.CourierId == null
                 || model.Description == null
                 || model.Origin == null)
@@ -31,10 +36,15 @@ namespace Core.Domain.Cases
             if (userRepository.GetById((int)model.CourierId) == null) throw new NotFoundException();
 
             model.Status = "Aguardando Coleta";
-            model.Code = Guid.NewGuid().ToString().ToString();
+            model.Code = generateDeliveryCodeService.GenerateDeliveryCode();
 
-            this.deliveryRepository.Add(model);
-            
+            int id = this.deliveryRepository.Add(model);
+
+            return new AddDeliveryResponse
+            {
+                Id = id,
+                Code = model.Code
+            };
         }
     }
 }

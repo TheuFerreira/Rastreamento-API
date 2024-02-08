@@ -1,7 +1,6 @@
 ﻿using Core.Domain.Repositories;
 using Core.Infra.Models;
 using Dapper;
-using System;
 using System.Data;
 
 namespace Core.Infra.Repositories
@@ -9,14 +8,20 @@ namespace Core.Infra.Repositories
     public class DeliveryRepository : IDeliveryRepository
     {
         private readonly IDbConnection connection;
+
         public DeliveryRepository(IDbConnection connection)
         {
             this.connection = connection;
         }
-        public void Add(DeliveryModel delivery)
+
+        public int Add(DeliveryModel delivery)
         {
-            string sql = @"INSERT INTO delivery (id_user, description, origin, destiny, observation, code, created_at, last_update_date, status) VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date, @status);";
-       
+            string sql = @"
+                INSERT INTO delivery (id_user, description, origin, destiny, observation, code, created_at, last_update_date, status) 
+                VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date, @status)
+                SELECT last_insert_id();
+            ";
+
             object data = new
             {
                 id_user = delivery.CourierId,
@@ -30,7 +35,8 @@ namespace Core.Infra.Repositories
                 status = delivery.Status
             };
 
-            connection.Execute(sql, data);
+            int lastId = connection.Execute(sql, data);
+            return lastId;
         }
 
         public IEnumerable<DeliveryModel> GetByCode(string code)
@@ -123,7 +129,7 @@ namespace Core.Infra.Repositories
             ";
             object data = new
             {
-                status, 
+                status,
                 currentTime,
                 deliveryId
             };
