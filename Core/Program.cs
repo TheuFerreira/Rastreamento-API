@@ -29,6 +29,7 @@ builder.Services.AddTransient<IGenerateDeliveryCodeService, GenerateDeliveryCode
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddTransient<IPositionDeliveryRepository, PositionDeliveryRepository>();
 
 // Use Cases
 builder.Services.AddTransient<ISignInCase, SignInCase>();
@@ -41,6 +42,7 @@ builder.Services.AddTransient<IGetSavedDeliveryCase, GetSavedDeliveryCase>();
 builder.Services.AddTransient<IGetDetailedSavedDeliveryCase, GetDetailedSavedDelivery>();
 builder.Services.AddTransient<IUpdateDeliveryStatusCase, UpdateDeliveryStatusCase>();
 builder.Services.AddTransient<IGetCourierDeliveriesCase, GetCourierDeliveriesCase>();
+builder.Services.AddTransient<IAddNewPositionCase, AddNewPositionCase>();
 
 // Add services to the container.
 // Isso aqui � para converter DateOnly, foi a forma que achei de lidar com o erro de serialization
@@ -84,7 +86,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // RUN IN LOCAL IP
-builder.WebHost.UseUrls("http://*:5566");
+//builder.WebHost.UseUrls("http://*:5566");
 
 var app = builder.Build();
 
@@ -97,7 +99,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseCors("AllowAll");
+//app.UseCors(x => x.AllowAnyOrigin());
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -39,3 +39,11 @@ CHANGE COLUMN `code` `code` VARCHAR(64) NOT NULL ;
 
 ALTER TABLE delivery
 ADD COLUMN status INT NOT NULL DEFAULT 0 AFTER last_update_date;
+
+CREATE TABLE delivery_position (
+	id_delivery_position INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id_delivery INT NOT NULL,
+	latitude DECIMAL NOT NULL,
+	longitude DECIMAL NOT NULL,
+	created_at DATETIME NOT NULL
+);

@@ -1,11 +1,7 @@
-﻿using Core.Domain.Cases;
-using Core.Domain.Repositories;
-using Core.Infra.Repositories;
-using Core.Presenters.Cases;
+﻿using Core.Presenters.Cases;
 using Core.Presenters.Requests;
 using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace Core.Presenters.Controllers
 {
@@ -16,7 +12,7 @@ namespace Core.Presenters.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly ISignUpCase signUpCase;
-        
+
         public RegisterController(ISignUpCase signUpCase)
         {
             this.signUpCase = signUpCase;
@@ -32,5 +28,5 @@ namespace Core.Presenters.Controllers
             return Ok(response);
         }
     }
- 
+
 }
