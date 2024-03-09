@@ -18,7 +18,7 @@ namespace Core.Infra.Repositories
         {
             string sql = @"
                 INSERT INTO delivery (id_user, description, origin, destiny, observation, code, created_at, last_update_date, status) 
-                VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date, @status)
+                VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date, @status);
                 SELECT last_insert_id();
             ";
 
