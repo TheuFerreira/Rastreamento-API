@@ -47,3 +47,7 @@ CREATE TABLE delivery_position (
 	longitude DECIMAL NOT NULL,
 	created_at DATETIME NOT NULL
 );
+
+ALTER TABLE `tracking`.`delivery_position` 
+CHANGE COLUMN `latitude` `latitude` DECIMAL(8,6) NOT NULL ,
+CHANGE COLUMN `longitude` `longitude` DECIMAL(9,6) NOT NULL ;
