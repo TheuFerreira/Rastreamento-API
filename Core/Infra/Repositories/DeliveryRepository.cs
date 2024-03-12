@@ -35,7 +35,7 @@ namespace Core.Infra.Repositories
                 status = delivery.Status
             };
 
-            int lastId = connection.Execute(sql, data);
+            int lastId = connection.ExecuteScalar<int>(sql, data);
             return lastId;
         }
 
