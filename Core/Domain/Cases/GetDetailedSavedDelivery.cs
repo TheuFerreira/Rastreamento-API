@@ -1,5 +1,6 @@
 ﻿using Core.Domain.Exceptions;
 using Core.Domain.Repositories;
+using Core.Infra.Models;
 using Core.Presenters.Cases;
 using Core.Presenters.Responses;
 
@@ -17,7 +18,7 @@ namespace Core.Domain.Cases
 
         public DetailedDeliveryResponse Execute(int Deliveryid, int UserId)
         {
-            var delivery = deliveryRepository.GetDeliveryByClientId(Deliveryid, UserId) ?? throw new NotFoundException();
+            DeliveryModel delivery = deliveryRepository.GetDeliveryByClientId(Deliveryid, UserId) ?? throw new NotFoundException();
             return new DetailedDeliveryResponse()
             {
                 Destiny = delivery.Destination,

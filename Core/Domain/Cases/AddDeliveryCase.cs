@@ -1,6 +1,7 @@
 ﻿using Core.Domain.Exceptions;
 using Core.Domain.Repositories;
 using Core.Domain.Services;
+using Core.Domain.Utils;
 using Core.Infra.Models;
 using Core.Presenters.Cases;
 using Core.Presenters.Responses;
@@ -35,7 +36,7 @@ namespace Core.Domain.Cases
 
             if (userRepository.GetById((int)model.CourierId) == null) throw new NotFoundException();
 
-            model.Status = "Aguardando Coleta";
+            model.Status = (int)DeliveryStatus.WaitingCollect;
             model.Code = generateDeliveryCodeService.GenerateDeliveryCode();
 
             int id = this.deliveryRepository.Add(model);

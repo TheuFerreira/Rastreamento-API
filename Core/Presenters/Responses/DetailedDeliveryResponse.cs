@@ -7,7 +7,7 @@
 
         public string Origin { get; set; }
 
-        public string CurrentStatus { get; set; }
+        public int CurrentStatus { get; set; }
 
         public string Destiny { get; set; }
 
@@ -17,10 +17,9 @@
             LastUpdate = DateTime.MinValue;
             CreatedDate = DateTime.MinValue;
             Origin = string.Empty;
-            CurrentStatus = string.Empty;
         }
 
-        public DetailedDeliveryResponse(DateTime lastUpdate, DateTime createdDate, string origin, string destiny, string status)
+        public DetailedDeliveryResponse(DateTime lastUpdate, DateTime createdDate, string origin, string destiny, int status)
         {
             CurrentStatus=status;
             Origin=origin;
