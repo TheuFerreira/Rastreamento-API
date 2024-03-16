@@ -30,6 +30,7 @@ builder.Services.AddTransient<IGenerateDeliveryCodeService, GenerateDeliveryCode
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddTransient<IPositionDeliveryRepository, PositionDeliveryRepository>();
+builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 
 // Use Cases
 builder.Services.AddTransient<ISignInCase, SignInCase>();

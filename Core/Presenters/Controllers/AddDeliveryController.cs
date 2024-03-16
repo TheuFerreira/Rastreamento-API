@@ -32,8 +32,7 @@ namespace Core.Presenters.Controllers
             Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
             int userId = int.Parse(claimUserId.Value);
 
-            DeliveryModel model = new(request.Observation, request.Description, request.Origin, request.Destination, userId);
-            AddDeliveryResponse response = addDeliveryCase.Execute(model);
+            AddDeliveryResponse response = addDeliveryCase.Execute(request, userId);
 
             return Ok(response);
         }

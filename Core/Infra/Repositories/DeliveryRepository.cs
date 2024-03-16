@@ -17,8 +17,8 @@ namespace Core.Infra.Repositories
         public int Add(DeliveryModel delivery)
         {
             string sql = @"
-                INSERT INTO delivery (id_user, description, origin, destiny, observation, code, created_at, last_update_date, status) 
-                VALUES (@id_user, @description, @origin, @destiny, @observation, @code, @created_at, @last_update_date, @status);
+                INSERT INTO delivery (id_user, description, address_origin_id, address_destiny_id, observation, code, created_at, last_update_date, status) 
+                VALUES (@id_user, @description, @address_origin_id, @address_destiny_id, @observation, @code, @created_at, @last_update_date, @status);
                 SELECT last_insert_id();
             ";
 
@@ -26,12 +26,12 @@ namespace Core.Infra.Repositories
             {
                 id_user = delivery.CourierId,
                 description = delivery.Description,
-                origin = delivery.Origin,
-                destiny = delivery.Destination,
+                address_origin_id = delivery.AddressOriginId,
+                address_destiny_id = delivery.AddressDestinyId,
                 observation = delivery.Observation,
                 code = delivery.Code,
-                created_at = DateTime.UtcNow,
-                last_update_date = DateTime.UtcNow,
+                created_at = delivery.CreatedAt,
+                last_update_date = delivery.LastUpdateTime,
                 status = delivery.Status
             };
 

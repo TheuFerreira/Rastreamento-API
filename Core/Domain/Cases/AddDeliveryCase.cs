@@ -4,6 +4,7 @@ using Core.Domain.Services;
 using Core.Domain.Utils;
 using Core.Infra.Models;
 using Core.Presenters.Cases;
+using Core.Presenters.Requests;
 using Core.Presenters.Responses;
 
 namespace Core.Domain.Cases
@@ -13,31 +14,59 @@ namespace Core.Domain.Cases
         private readonly IDeliveryRepository deliveryRepository;
         private readonly IUserRepository userRepository;
         private readonly IGenerateDeliveryCodeService generateDeliveryCodeService;
+        private readonly IAddressRepository addressRepository;
 
-        public AddDeliveryCase(IDeliveryRepository deliveryRepository, IUserRepository userRepository, IGenerateDeliveryCodeService generateDeliveryCodeService)
+        public AddDeliveryCase(IDeliveryRepository deliveryRepository, IUserRepository userRepository, IGenerateDeliveryCodeService generateDeliveryCodeService, IAddressRepository addressRepository)
         {
             this.deliveryRepository = deliveryRepository;
             this.userRepository = userRepository;
             this.generateDeliveryCodeService = generateDeliveryCodeService;
+            this.addressRepository = addressRepository;
         }
 
-        public AddDeliveryResponse Execute(DeliveryModel model)
+        public AddDeliveryResponse Execute(AddDeliveryRequest request, int userId)
         {
-            if (model == null) throw new ArgumentNullException();
-
             if (
-                model.Destination == null
-                || model.Observation == null
-                //TODO: || model.CostumerId == null Verificar se o cliente vai ser definido na hora de cadastrar o pacote
-                || model.CourierId == null
-                || model.Description == null
-                || model.Origin == null)
+                request.Destiny == null
+                || request.Observation == null
+                || request.Description == null
+                || request.Origin == null)
                 throw new BadHttpRequestException("Preencha todos os campos disponíveis!");
 
-            if (userRepository.GetById((int)model.CourierId) == null) throw new NotFoundException();
+            _ = userRepository.GetById(userId) ?? throw new NotFoundException();
 
-            model.Status = (int)DeliveryStatus.WaitingCollect;
-            model.Code = generateDeliveryCodeService.GenerateDeliveryCode();
+            AddressModel origin = new()
+            {
+                CEP = request.Origin.CEP,
+                City = request.Origin.City,
+                UF = request.Origin.UF,
+                District = request.Origin.District,
+                Street = request.Origin.Street,
+                Number = request.Origin.Number,
+                Complement = request.Origin.Complement,
+            };
+
+            AddressModel destiny = new()
+            {
+                CEP = request.Destiny.CEP,
+                City = request.Destiny.City,
+                UF = request.Destiny.UF,
+                District = request.Destiny.District,
+                Street = request.Destiny.Street,
+                Number = request.Destiny.Number,
+                Complement = request.Destiny.Complement,
+            };
+
+            origin.AddressId = addressRepository.Add(origin);
+            destiny.AddressId = addressRepository.Add(destiny);
+
+            DeliveryModel model = new(request.Observation, request.Description, origin.AddressId.Value, destiny.AddressId.Value, userId)
+            {
+                Status = (int)DeliveryStatus.WaitingCollect,
+                Code = generateDeliveryCodeService.GenerateDeliveryCode(),
+                CreatedAt = DateTime.UtcNow,
+                LastUpdateTime = DateTime.UtcNow,
+            };
 
             int id = this.deliveryRepository.Add(model);
 

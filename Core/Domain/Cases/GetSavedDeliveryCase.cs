@@ -8,6 +8,7 @@ namespace Core.Domain.Cases
     public class GetSavedDeliveryCase : IGetSavedDeliveryCase
     {
         private readonly IDeliveryRepository repository;
+
         public GetSavedDeliveryCase(IDeliveryRepository repository) 
         {
             this.repository = repository;
@@ -15,7 +16,6 @@ namespace Core.Domain.Cases
 
         public BasicDeliveryResponse Execute(int DeliveryId, int ClientId)
         {
-
             var delivery = repository.GetDeliveryByClientId(DeliveryId, ClientId) ?? throw new NotFoundException();
 
             return new BasicDeliveryResponse()

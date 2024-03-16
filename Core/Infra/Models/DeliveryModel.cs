@@ -6,8 +6,8 @@ namespace Core.Infra.Models
         public int? CourierId { get; set; }
         public string Observation { get; set; }
         public string Description { get; set; }
-        public string Origin { get; set; }
-        public string Destination { get; set; }
+        public int AddressOriginId { get; set; }
+        public int AddressDestinyId { get; set; }
         public string Code { get; set; }
         public int Status { get; set; }
         public DateTime LastUpdateTime { get; set; }
@@ -18,17 +18,15 @@ namespace Core.Infra.Models
         {
             Observation = string.Empty;
             Description = string.Empty;
-            Origin = string.Empty;
-            Destination = string.Empty;
             Code = string.Empty;
         }
 
-        public DeliveryModel(string observation, string description, string origin, string destination, int courierId)
+        public DeliveryModel(string observation, string description, int addressOriginId, int addressDestinationId, int courierId)
         {
             Observation = observation;
             Description = description;
-            Origin = origin;
-            Destination = destination;
+            AddressOriginId = addressOriginId;
+            AddressDestinyId = addressDestinationId;
             Code = string.Empty;
             CourierId = courierId;
         }
