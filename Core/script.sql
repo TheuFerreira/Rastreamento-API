@@ -18,7 +18,6 @@ CREATE TABLE delivery (
 	description VARCHAR(200) NOT NULL,
 	origin VARCHAR(200) NOT NULL,
 	destiny VARCHAR(200) NOT NULL,
-	status VARCHAR(45) NOT NULL,
 	observation VARCHAR(200) NULL,
 	code VARCHAR(16) NOT NULL,
 	created_at DATETIME NOT NULL,
