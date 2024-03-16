@@ -42,7 +42,7 @@ namespace Core.Infra.Repositories
         public IEnumerable<DeliveryModel> GetByCode(string code)
         {
             string sql = @"
-                SELECT id_delivery AS DeliveryId, description, origin, destiny AS Destination, observation, code, last_update_date AS LastUpdateTime 
+                SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime 
                 FROM delivery 
                 WHERE BINARY code = @code;
             ";
@@ -59,7 +59,7 @@ namespace Core.Infra.Repositories
         {
             string sql =
             @"
-                SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination 
+                SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, D.address_destiny_id AS AddressDestinyId 
                 FROM delivery AS D 
                 WHERE D.id_delivery = @Id AND @Id NOT IN (SELECT UD.id_delivery FROM user_has_delivery as UD);
                     
@@ -80,7 +80,7 @@ namespace Core.Infra.Repositories
         {
             string sql =
             @"
-                SELECT D.id_delivery AS DeliveryId, U.id_user AS CourierId, D.description, D.origin, D.destiny AS Destination, D.code, D.observation, D.status, D.last_update_date AS LastUpdateTime, D.created_at AS CreatedAt
+                SELECT D.id_delivery AS DeliveryId, U.id_user AS CourierId, D.description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, D.code, D.observation, D.status, D.last_update_date AS LastUpdateTime, D.created_at AS CreatedAt
                 FROM delivery AS D
                 JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
                 JOIN users AS U on UD.id_user = U.id_user
@@ -100,14 +100,12 @@ namespace Core.Infra.Repositories
         {
             string sql =
             @"
-                SELECT D.created_at AS CreatedAt, D.last_update_date AS UpdatedAt, D.destiny AS Destination, D.origin AS Origin, D.status AS STATUS
+                SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, D.status AS STATUS
                 FROM delivery AS D 
                 INNER JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
                 WHERE UD.id_delivery = @DeliveryId AND UD.id_user = @ClientId;
                     
             ";
-
-
 
             object data = new
             {

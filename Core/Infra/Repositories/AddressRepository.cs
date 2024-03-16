@@ -35,5 +35,18 @@ namespace Core.Infra.Repositories
             int id = connection.ExecuteScalar<int>(sql, data);
             return id;
         }
+
+        public AddressModel? GetById(int id)
+        {
+            string sql = "SELECT id_address AS AddressId, CEP, UF, City, District, Street, Number, Complement FROM address WHERE id_address = @id";
+            object data = new
+            {
+                id,
+            };
+
+            AddressModel? model = connection.Query<AddressModel>(sql, data).FirstOrDefault();
+            return model;
+            throw new NotImplementedException();
+        }
     }
 }

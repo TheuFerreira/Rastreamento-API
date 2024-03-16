@@ -5,21 +5,21 @@
         public DateTime LastUpdate { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public string Origin { get; set; }
+        public DetailedDeliveryAddressResponse Origin { get; set; }
 
         public int CurrentStatus { get; set; }
 
-        public string Destiny { get; set; }
+        public DetailedDeliveryAddressResponse Destiny { get; set; }
 
         public DetailedDeliveryResponse()
         {
-            Destiny = string.Empty;
+            Destiny = new DetailedDeliveryAddressResponse();
             LastUpdate = DateTime.MinValue;
             CreatedDate = DateTime.MinValue;
-            Origin = string.Empty;
+            Origin = new DetailedDeliveryAddressResponse();
         }
 
-        public DetailedDeliveryResponse(DateTime lastUpdate, DateTime createdDate, string origin, string destiny, int status)
+        public DetailedDeliveryResponse(DateTime lastUpdate, DateTime createdDate, DetailedDeliveryAddressResponse origin, DetailedDeliveryAddressResponse destiny, int status)
         {
             CurrentStatus=status;
             Origin=origin;
@@ -27,6 +27,29 @@
             Destiny=destiny;
             CreatedDate=createdDate;
         }
+    }
+
+    public class DetailedDeliveryAddressResponse
+    {
+        public DetailedDeliveryAddressResponse()
+        {
+            CEP = string.Empty;
+            UF = string.Empty;
+            City = string.Empty;
+            District = string.Empty;
+            Street = string.Empty;
+            Number = string.Empty;
+            Complement = string.Empty;
+        }
+
+        public int AddressId { get; set; }
+        public string CEP { get; set; }
+        public string UF { get; set; }
+        public string City { get; set; }
+        public string? District { get; set; }
+        public string? Street { get; set; }
+        public string? Number { get; set; }
+        public string? Complement { get; set; }
     }
 }
 
