@@ -50,3 +50,14 @@ CREATE TABLE delivery_position (
 ALTER TABLE `tracking`.`delivery_position` 
 CHANGE COLUMN `latitude` `latitude` DECIMAL(8,6) NOT NULL ,
 CHANGE COLUMN `longitude` `longitude` DECIMAL(9,6) NOT NULL ;
+
+CREATE TABLE address(
+	id_address INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    cep VARCHAR(8) NOT NULL,
+    uf VARCHAR(2) NOT NULL,
+    city VARCHAR(64) NOT NULL,
+    district VARCHAR(128),
+    street VARCHAR(128),
+    number VARCHAR(16),
+    complement VARCHAR(128)
+);
