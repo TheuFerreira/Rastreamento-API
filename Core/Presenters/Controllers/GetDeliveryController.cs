@@ -10,7 +10,6 @@ using System.Security.Claims;
 namespace Core.Presenters.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -36,7 +35,7 @@ namespace Core.Presenters.Controllers
         }
 
         [HttpGet]
-        [Route("/NotSaved/{DeliveryId}")]
+        [Route("[controller]/NotSaved/{DeliveryId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasicDeliveryResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetNotSavedDelivery(int DeliveryId)
@@ -49,7 +48,7 @@ namespace Core.Presenters.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("/Saved/{DeliveryId}")]
+        [Route("[controller]/Saved/{DeliveryId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasicDeliveryResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetSavedDelivery(int DeliveryId) 
@@ -64,7 +63,7 @@ namespace Core.Presenters.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("/Saved/Detailed/{DeliveryId}")]
+        [Route("[controller]/Saved/Detailed/{DeliveryId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DetailedDeliveryResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetSavedDeliveryDetais(int DeliveryId)
@@ -79,7 +78,7 @@ namespace Core.Presenters.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("/Saved")]
+        [Route("[controller]/Saved")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourierDeliveriesResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetCourierDeliveries(int DeliveryId)
