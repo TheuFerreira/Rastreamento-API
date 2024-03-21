@@ -31,10 +31,14 @@ namespace Core.Domain.Cases
             byte[] key = Encoding.UTF8.GetBytes(jwtModel.Key);
             string token = BuildToken(expiration, model.UserId, key);
 
+            DateTime expirationRefreshToken = DateTime.UtcNow.AddHours(jwtModel.Expiration);
+            string refreshToken = BuildToken(expirationRefreshToken, model.UserId, key);
+
             SignInResponse response = new()
             {
                 Token = token,
                 ExpiresAt = expiration,
+                RefreshToken = refreshToken,
             };
             return response;
         }
