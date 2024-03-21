@@ -8,6 +8,7 @@ using Core.Presenters.Cases;
 using Core.Presenters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using System.Data;
 using System.Text;
@@ -84,7 +85,10 @@ builder.Services
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.SwaggerDoc("v1", new OpenApiInfo { Title = "Trakky API", Version = "v1" });
+});
 
 // RUN IN LOCAL IP
 //builder.WebHost.UseUrls("http://*:5566");
