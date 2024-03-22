@@ -5,5 +5,6 @@ namespace Core.Domain.Repositories
     public interface IPositionDeliveryRepository
     {
         void Insert(PositionDeliveryModel positionDelivery);
+        PositionDeliveryModel? GetMostRecentByDelivery(int deliveryId);
     }
 }
