@@ -29,6 +29,8 @@ namespace Core.Domain.Cases
                 Longitude = newPositionRequest.Longitude,
             };
             positionDeliveryRepository.Insert(model);
+
+            deliveryRepository.UpdateLastUpdateTime(newPositionRequest.DeliveryId, DateTime.UtcNow);
         }
     }
 }

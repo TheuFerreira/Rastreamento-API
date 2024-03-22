@@ -59,7 +59,7 @@ namespace Core.Infra.Repositories
         {
             string sql =
             @"
-                SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, D.address_destiny_id AS AddressDestinyId 
+                SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, D.address_destiny_id AS AddressDestinyId, address_origin_id AS AddressOriginId 
                 FROM delivery AS D 
                 WHERE D.id_delivery = @Id AND @Id NOT IN (SELECT UD.id_delivery FROM user_has_delivery as UD);
                     
@@ -116,6 +116,22 @@ namespace Core.Infra.Repositories
 
             DeliveryModel? model = connection.Query<DeliveryModel>(sql, data).FirstOrDefault();
             return model;
+        }
+
+        public void UpdateLastUpdateTime(int deliveryId, DateTime currentTime)
+        {
+            string sql = @"
+                UPDATE delivery 
+                SET last_update_date = @currentTime 
+                WHERE id_delivery = @deliveryId;
+            ";
+            object data = new
+            {
+                currentTime,
+                deliveryId
+            };
+
+            connection.Execute(sql, data);
         }
 
         public void UpdateStatus(int deliveryId, int status, DateTime currentTime)
