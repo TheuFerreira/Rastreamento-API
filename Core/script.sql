@@ -67,3 +67,6 @@ DROP COLUMN origin,
 DROP COLUMN destiny,
 ADD COLUMN address_origin_id INT NOT NULL AFTER id_user,
 ADD COLUMN address_destiny_id INT NOT NULL AFTER address_origin_id;
+
+ALTER TABLE delivery_position
+ADD COLUMN id_address INT NULL AFTER id_delivery_position;

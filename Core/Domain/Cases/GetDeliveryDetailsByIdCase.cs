@@ -28,10 +28,27 @@ namespace Core.Domain.Cases
             GetPositionDeliveryResponse? positionResponse = null;
             if (position != null)
             {
+                int? addressId = position.AddressId;
+                GetCEPDeliveryResponse? cepPositionResponse = null;
+                if (addressId.HasValue)
+                {
+                    AddressModel? addressModel = addressRepository.GetById(addressId.Value);
+                    if (addressModel != null)
+                    {
+                        cepPositionResponse = new()
+                        {
+                            CEP = addressModel.CEP,
+                            City = addressModel.City,
+                            UF = addressModel.UF
+                        };
+                    }
+                }
+
                 positionResponse = new()
                 {
                     Latitude = position.Latitude,
                     Longitude = position.Longitude,
+                    Address = cepPositionResponse,
                 };
             }
 

@@ -43,5 +43,6 @@ namespace Core.Presenters.Responses
     {
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+        public GetCEPDeliveryResponse? Address { get; set; }
     }
 }

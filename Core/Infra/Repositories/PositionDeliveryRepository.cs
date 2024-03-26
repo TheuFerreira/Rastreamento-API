@@ -17,7 +17,7 @@ namespace Core.Infra.Repositories
         public PositionDeliveryModel? GetMostRecentByDelivery(int deliveryId)
         {
             string sql = @"
-                SELECT id_delivery AS DeliveryId, latitude, longitude, created_at AS CreatedAt 
+                SELECT id_address AS AddressId, id_delivery AS DeliveryId, latitude, longitude, created_at AS CreatedAt 
                 FROM delivery_position 
                 WHERE id_delivery = @id
                 ORDER BY id_delivery_position DESC 
@@ -34,9 +34,13 @@ namespace Core.Infra.Repositories
 
         public void Insert(PositionDeliveryModel positionDelivery)
         {
-            string sql = "INSERT INTO delivery_position (id_delivery, latitude, longitude, created_at) VALUES (@id_delivery, @latitude, @longitude, @created_at);";
+            string sql = @"
+                INSERT INTO delivery_position (id_address, id_delivery, latitude, longitude, created_at) 
+                VALUES (@id_address, @id_delivery, @latitude, @longitude, @created_at);
+            ";
             object data = new
             {
+                @id_address = positionDelivery.AddressId,
                 @id_delivery = positionDelivery.DeliveryId,
                 @latitude = positionDelivery.Latitude,
                 @longitude = positionDelivery.Longitude,
