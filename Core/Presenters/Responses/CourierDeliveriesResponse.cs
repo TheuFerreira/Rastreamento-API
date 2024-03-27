@@ -4,15 +4,15 @@ namespace Core.Presenters.Responses
 {
     public class CourierDeliveriesResponse
     {
-        public IEnumerable<DeliveryModel> Deliveries { get; set; }
+        public IEnumerable<GetSavedDeliveriesResponse> Deliveries { get; set; }
 
 
         public CourierDeliveriesResponse() 
         {
-            this.Deliveries = new List<DeliveryModel>();
+            this.Deliveries = new List<GetSavedDeliveriesResponse>();
         }
 
-        public CourierDeliveriesResponse(IEnumerable<DeliveryModel> deliveries) 
+        public CourierDeliveriesResponse(IEnumerable<GetSavedDeliveriesResponse> deliveries) 
         {
             this.Deliveries = deliveries;
         }

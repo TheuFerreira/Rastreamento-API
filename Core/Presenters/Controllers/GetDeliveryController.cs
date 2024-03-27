@@ -79,14 +79,14 @@ namespace Core.Presenters.Controllers
         [HttpGet]
         [Authorize]
         [Route("[controller]/Saved")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourierDeliveriesResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetSavedDeliveriesResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetCourierDeliveries(int DeliveryId)
         {
             ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
             Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
             int UserId = int.Parse(claimUserId.Value);
-            CourierDeliveriesResponse response = getCourierDeliveriesCase.Execute(UserId);
+            IEnumerable<GetSavedDeliveriesResponse> response = getCourierDeliveriesCase.Execute(UserId);
 
             return Ok(response);
         }

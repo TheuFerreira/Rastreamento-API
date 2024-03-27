@@ -5,6 +5,6 @@ namespace Core.Presenters.Cases
 {
     public interface IGetCourierDeliveriesCase
     {
-        public CourierDeliveriesResponse Execute(int UserId);
+        public IEnumerable<GetSavedDeliveriesResponse> Execute(int UserId);
     }
 }
