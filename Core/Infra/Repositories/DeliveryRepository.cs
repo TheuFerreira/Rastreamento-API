@@ -39,6 +39,23 @@ namespace Core.Infra.Repositories
             return lastId;
         }
 
+        public IEnumerable<DeliveryModel> GetAllUserSaved(int userId)
+        {
+            string sql = @"
+                SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime 
+                FROM delivery AS d
+                INNER JOIN user_has_delivery AS ud ON ud.id_delivery = d.id_delivery
+                WHERE ud.id_user = @userId;
+            ";
+            object data = new
+            {
+                userId,
+            };
+
+            IEnumerable<DeliveryModel> model = connection.Query<DeliveryModel>(sql, data);
+            return model;
+        }
+
         public IEnumerable<DeliveryModel> GetByCode(string code)
         {
             string sql = @"

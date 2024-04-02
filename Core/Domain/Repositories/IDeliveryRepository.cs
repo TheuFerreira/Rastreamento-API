@@ -11,5 +11,6 @@ namespace Core.Domain.Repositories
         DeliveryModel? GetDeliveryByClientId(int DeliveryId, int ClientId);
         void UpdateStatus(int deliveryId, int status, DateTime currentTime);
         void UpdateLastUpdateTime(int deliveryId, DateTime currentTime);
+        IEnumerable<DeliveryModel> GetAllUserSaved(int userId);
     }
 }
