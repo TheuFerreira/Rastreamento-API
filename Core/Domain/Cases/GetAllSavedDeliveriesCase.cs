@@ -21,7 +21,8 @@ namespace Core.Domain.Cases
                 {
                     Code = x.Code,
                     DeliveryId = x.DeliveryId,
-                    Description = x.Description
+                    Description = x.Description,
+                    Status = x.Status
                 });
 
             return responses;
