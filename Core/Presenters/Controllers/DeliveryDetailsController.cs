@@ -26,7 +26,6 @@ namespace Core.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult PutStatus(UpdateDeliveryStatusRequest request)
         {
-
             _updateDeliveryStatusCase.Execute(request);
             return NoContent();
         }

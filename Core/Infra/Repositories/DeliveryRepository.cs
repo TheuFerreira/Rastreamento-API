@@ -191,5 +191,21 @@ namespace Core.Infra.Repositories
 
             connection.Execute(sql, data);
         }
+
+        public IEnumerable<DeliveryModel> GetAllOfUser(int userId)
+        {
+            string sql = @"
+                SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime, status 
+                FROM delivery 
+                WHERE BINARY id_user = @userId;
+            ";
+            object data = new
+            {
+                userId,
+            };
+
+            IEnumerable<DeliveryModel> model = connection.Query<DeliveryModel>(sql, data);
+            return model;
+        }
     }
 }
