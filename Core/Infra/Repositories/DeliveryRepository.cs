@@ -39,10 +39,33 @@ namespace Core.Infra.Repositories
             return lastId;
         }
 
+        public bool UserSavedDelivery(int userId, int deliveryId)
+        {
+            string sql = @"SELECT COUNT(id_user) FROM user_has_delivery WHERE id_delivery = @deliveryId AND id_user = @userId;";
+            object data = new
+            {
+                deliveryId,
+                userId,
+            };
+
+            int count = connection.ExecuteScalar<int>(sql, data);
+            return count > 0;
+        }
+
+        public void AddUser(int deliveryId, int userId)
+        {
+            string sql = @"INSERT INTO user_has_delivery (id_delivery, id_user) VALUES (@deliveryId, @userId);";
+            object data = new
+            {
+                deliveryId,
+                userId,
+            };
+
+            connection.Execute(sql, data);
+        }
+
         public IEnumerable<DeliveryModel> GetAllUserSaved(int userId)
         {
-            /* string sql = @" SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
-                 FROM delivery AS d";*/
             string sql = @"
                 SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
                 FROM delivery AS d
@@ -80,7 +103,7 @@ namespace Core.Infra.Repositories
             @"
                 SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, D.address_destiny_id AS AddressDestinyId, address_origin_id AS AddressOriginId, D.description AS Description 
                 FROM delivery AS D 
-                WHERE D.id_delivery = @Id AND @Id NOT IN (SELECT UD.id_delivery FROM user_has_delivery as UD);
+                WHERE D.id_delivery = @Id;
                     
             ";
 
@@ -88,7 +111,6 @@ namespace Core.Infra.Repositories
             {
                 Id,
             };
-            connection.Execute(sql, data);
 
             DeliveryModel? model = connection.Query<DeliveryModel>(sql, data).FirstOrDefault();
             return model;

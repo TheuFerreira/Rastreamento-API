@@ -12,5 +12,7 @@ namespace Core.Domain.Repositories
         void UpdateStatus(int deliveryId, int status, DateTime currentTime);
         void UpdateLastUpdateTime(int deliveryId, DateTime currentTime);
         IEnumerable<DeliveryModel> GetAllUserSaved(int userId);
+        void AddUser(int deliveryId, int userId);
+        bool UserSavedDelivery(int userId, int deliveryId);
     }
 }
