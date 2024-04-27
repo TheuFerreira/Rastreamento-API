@@ -15,5 +15,6 @@ namespace Core.Domain.Repositories
         void AddUser(int deliveryId, int userId);
         bool UserSavedDelivery(int userId, int deliveryId);
         IEnumerable<DeliveryModel> GetAllOfUser(int userId);
+        void RemoveFromSaved(int deliveryId, int userId);
     }
 }

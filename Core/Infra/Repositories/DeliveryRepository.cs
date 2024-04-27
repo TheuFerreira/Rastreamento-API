@@ -207,5 +207,17 @@ namespace Core.Infra.Repositories
             IEnumerable<DeliveryModel> model = connection.Query<DeliveryModel>(sql, data);
             return model;
         }
+
+        public void RemoveFromSaved(int deliveryId, int userId)
+        {
+            string sql = "DELETE FROM user_has_delivery WHERE id_delivery = @deliveryId AND id_user = @userId;";
+            object data = new
+            {
+                deliveryId,
+                userId,
+            };
+
+            connection.Execute(sql, data);
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace Core.Presenters.Controllers
 
         [HttpGet("UserDeliveries")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetUserDeliveriesResponse>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetUserDeliveries()
         {
             ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();

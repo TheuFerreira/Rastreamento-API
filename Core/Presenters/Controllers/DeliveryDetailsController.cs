@@ -1,7 +1,10 @@
-﻿using Core.Presenters.Cases;
+﻿using Core.Domain.Repositories;
+using Core.Presenters.Cases;
 using Core.Presenters.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace Core.Presenters.Controllers
 {
@@ -14,10 +17,12 @@ namespace Core.Presenters.Controllers
     public class DeliveryDetailsController : ControllerBase
     {
         private readonly IUpdateDeliveryStatusCase _updateDeliveryStatusCase;
+        private readonly IDeleteFromSavedCase _deleteFromSavedCase;
 
-        public DeliveryDetailsController(IUpdateDeliveryStatusCase updateDeliveryStatusCase)
+        public DeliveryDetailsController(IUpdateDeliveryStatusCase updateDeliveryStatusCase, IDeleteFromSavedCase deleteFromSavedCase)
         {
             _updateDeliveryStatusCase = updateDeliveryStatusCase;
+            _deleteFromSavedCase = deleteFromSavedCase;
         }
 
         [HttpPut]
@@ -27,6 +32,21 @@ namespace Core.Presenters.Controllers
         public IActionResult PutStatus(UpdateDeliveryStatusRequest request)
         {
             _updateDeliveryStatusCase.Execute(request);
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("FromSaved/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult DeleteFromSaved(int id)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int userId = int.Parse(claimUserId.Value);
+
+            _deleteFromSavedCase.Execute(id, userId);
+
             return NoContent();
         }
     }
