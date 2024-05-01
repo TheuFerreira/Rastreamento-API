@@ -44,9 +44,10 @@ namespace Core.Domain.Cases
                     DeliveryId = x.DeliveryId,
                     Destiny = destiny,
                     LastUpdateTime = x.LastUpdateTime,
-                    Name = name,
+                    Description = name,
                     Origin = origin,
-                    Status = x.Status
+                    Status = x.Status,
+                    Code = x.Code,
                 };
             });
 

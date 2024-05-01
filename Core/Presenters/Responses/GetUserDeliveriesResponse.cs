@@ -6,10 +6,11 @@ namespace Core.Presenters.Responses
     {
         [JsonPropertyName("id_delivery")]
         public int DeliveryId { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public GetUserDeliveriesAddressResponse Origin { get; set; }
         public GetUserDeliveriesAddressResponse Destiny { get; set; }
         public int Status { get; set; }
+        public string Code { get; set; }
 
         [JsonPropertyName("last_update_time")]
         public DateTime LastUpdateTime { get; set; }
