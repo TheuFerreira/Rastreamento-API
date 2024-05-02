@@ -54,11 +54,13 @@ namespace Core.Infra.Repositories
 
         public void AddUser(int deliveryId, int userId)
         {
-            string sql = @"INSERT INTO user_has_delivery (id_delivery, id_user) VALUES (@deliveryId, @userId);";
+            DateTime createdAt = DateTime.UtcNow;
+            string sql = @"INSERT INTO user_has_delivery (id_delivery, id_user, created_at) VALUES (@deliveryId, @userId, @createdAt);";
             object data = new
             {
                 deliveryId,
                 userId,
+                createdAt
             };
 
             connection.Execute(sql, data);
@@ -66,12 +68,15 @@ namespace Core.Infra.Repositories
 
         public IEnumerable<DeliveryModel> GetAllUserSaved(int userId)
         {
-            string sql = @"
+           
+              string sql = @" SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
+                 FROM delivery AS d";
+            /*string sql = @"
                 SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
                 FROM delivery AS d
                 INNER JOIN user_has_delivery AS ud ON ud.id_delivery = d.id_delivery
                 WHERE ud.id_user = @userId;
-            ";
+            ";*/
             object data = new
             {
                 userId,
