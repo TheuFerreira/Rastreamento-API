@@ -48,5 +48,28 @@ namespace Core.Infra.Repositories
             return model;
             throw new NotImplementedException();
         }
+
+        public int Update(AddressModel model)
+        {
+            string sql = @"
+                UPDATE address 
+                SET cep = @cep, uf = @uf, city = @city, district = @district, street = @street, number = @number, complement = @complement 
+                WHERE id_address = @addressId;
+            ";
+            object data = new
+            {
+                @addressId = model.AddressId,
+                @cep = model.CEP,
+                @uf = model.UF,
+                @city = model.City,
+                @district = model.District,
+                @street = model.Street,
+                @number = model.Number,
+                @complement = model.Complement
+            };
+
+            int id = connection.ExecuteScalar<int>(sql, data);
+            return id;
+        }
     }
 }

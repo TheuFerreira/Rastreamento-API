@@ -1,4 +1,5 @@
 ﻿using Core.Presenters.Cases;
+using Core.Presenters.Requests;
 using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace Core.Presenters.Controllers
     public class DeliveryController : ControllerBase
     {
         private readonly IGetUserDeliveriesCase _getUserDeliveriesCase;
+        private readonly IUpdateDeliveryCase _updateDeliveryCase;
 
-        public DeliveryController(IGetUserDeliveriesCase getUserDeliveriesCase)
+        public DeliveryController(IGetUserDeliveriesCase getUserDeliveriesCase, IUpdateDeliveryCase updateDeliveryCase)
         {
             _getUserDeliveriesCase = getUserDeliveriesCase;
+            _updateDeliveryCase = updateDeliveryCase;
         }
 
         [HttpGet("UserDeliveries")]
@@ -32,6 +35,18 @@ namespace Core.Presenters.Controllers
 
             IEnumerable<GetUserDeliveriesResponse> responses = _getUserDeliveriesCase.Execute(userId);
             return Ok(responses);
+        }
+
+        [HttpPut("Delivery")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult PutDelivery(UpdateDeliveryRequest request)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int userId = int.Parse(claimUserId.Value);
+
+            _updateDeliveryCase.Execute(request, userId);
+            return NoContent();
         }
     }
 }

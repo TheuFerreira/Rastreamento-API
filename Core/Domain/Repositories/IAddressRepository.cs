@@ -6,5 +6,6 @@ namespace Core.Domain.Repositories
     {
         int Add(AddressModel model);
         AddressModel? GetById(int id);
+        int Update(AddressModel model);
     }
 }

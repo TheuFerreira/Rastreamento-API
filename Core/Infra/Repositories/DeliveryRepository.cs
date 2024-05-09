@@ -224,5 +224,24 @@ namespace Core.Infra.Repositories
 
             connection.Execute(sql, data);
         }
+
+        public int Update(DeliveryModel delivery)
+        {
+            string sql = @"
+                UPDATE delivery 
+                SET description = @description, observation = @observation
+                WHERE id_delivery = @deliveryId;
+            ";
+
+            object data = new
+            {
+                description = delivery.Description,
+                observation = delivery.Observation,
+                last_update_date = delivery.LastUpdateTime
+            };
+
+            int lastId = connection.ExecuteScalar<int>(sql, data);
+            return lastId;
+        }
     }
 }
