@@ -41,7 +41,11 @@ namespace Core.Infra.Repositories
 
         public bool UserSavedDelivery(int userId, int deliveryId)
         {
-            string sql = @"SELECT COUNT(id_user) FROM user_has_delivery WHERE id_delivery = @deliveryId AND id_user = @userId;";
+            string sql = @"
+                SELECT COUNT(id_user) 
+                FROM user_has_delivery 
+                WHERE id_delivery = @deliveryId AND id_user = @userId AND deleted = 0;
+            ";
             object data = new
             {
                 deliveryId,
@@ -68,13 +72,11 @@ namespace Core.Infra.Repositories
 
         public IEnumerable<DeliveryModel> GetAllUserSaved(int userId)
         {
-              /*string sql = @" SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
-                 FROM delivery AS d";*/
             string sql = @"
                 SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
                 FROM delivery AS d
                 INNER JOIN user_has_delivery AS ud ON ud.id_delivery = d.id_delivery
-                WHERE ud.id_user = @userId;
+                WHERE ud.id_user = @userId AND deleted = 0;
             ";
 
             object data = new
@@ -91,7 +93,7 @@ namespace Core.Infra.Repositories
             string sql = @"
                 SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime 
                 FROM delivery 
-                WHERE BINARY code = @code;
+                WHERE BINARY code = @code AND deleted = 0;
             ";
             object data = new
             {
@@ -108,7 +110,7 @@ namespace Core.Infra.Repositories
             @"
                 SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, D.address_destiny_id AS AddressDestinyId, address_origin_id AS AddressOriginId, D.description AS Description 
                 FROM delivery AS D 
-                WHERE D.id_delivery = @Id;
+                WHERE D.id_delivery = @Id AND deleted = 0;
                     
             ";
 
@@ -130,7 +132,7 @@ namespace Core.Infra.Repositories
                 FROM delivery AS D
                 JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
                 JOIN users AS U on UD.id_user = U.id_user
-                WHERE BINARY U.id_user = @UserId;
+                WHERE BINARY U.id_user = @UserId AND deleted = 0;
             ";
             object data = new
             {
@@ -149,7 +151,7 @@ namespace Core.Infra.Repositories
                 SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, D.status AS STATUS
                 FROM delivery AS D 
                 INNER JOIN user_has_delivery AS UD on UD.id_delivery = D.id_delivery
-                WHERE UD.id_delivery = @DeliveryId AND UD.id_user = @ClientId;
+                WHERE UD.id_delivery = @DeliveryId AND UD.id_user = @ClientId AND deleted = 0;
                     
             ";
 
@@ -169,7 +171,7 @@ namespace Core.Infra.Repositories
             string sql = @"
                 UPDATE delivery 
                 SET last_update_date = @currentTime 
-                WHERE id_delivery = @deliveryId;
+                WHERE id_delivery = @deliveryId AND deleted = 0;
             ";
             object data = new
             {
@@ -185,7 +187,7 @@ namespace Core.Infra.Repositories
             string sql = @"
                 UPDATE delivery 
                 SET status = @status, last_update_date = @currentTime 
-                WHERE id_delivery = @deliveryId;
+                WHERE id_delivery = @deliveryId AND deleted = 0;
             ";
             object data = new
             {
@@ -202,7 +204,7 @@ namespace Core.Infra.Repositories
             string sql = @"
                 SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime, status 
                 FROM delivery 
-                WHERE BINARY id_user = @userId;
+                WHERE BINARY id_user = @userId AND deleted = 0;
             ";
             object data = new
             {
@@ -215,7 +217,7 @@ namespace Core.Infra.Repositories
 
         public void RemoveFromSaved(int deliveryId, int userId)
         {
-            string sql = "DELETE FROM user_has_delivery WHERE id_delivery = @deliveryId AND id_user = @userId;";
+            string sql = "DELETE FROM user_has_delivery WHERE id_delivery = @deliveryId AND id_user = @userId AND deleted = 0;";
             object data = new
             {
                 deliveryId,
@@ -230,7 +232,7 @@ namespace Core.Infra.Repositories
             string sql = @"
                 UPDATE delivery 
                 SET description = @description, observation = @observation
-                WHERE id_delivery = @deliveryId;
+                WHERE id_delivery = @deliveryId AND deleted = 0;
             ";
 
             object data = new
@@ -242,6 +244,22 @@ namespace Core.Infra.Repositories
 
             int lastId = connection.ExecuteScalar<int>(sql, data);
             return lastId;
+        }
+
+        public void Delete(int deliveryId)
+        {
+            string sql = @"
+                UPDATE delivery 
+                SET deleted = 1
+                WHERE id_delivery = @deliveryId;
+            ";
+
+            object data = new
+            {
+                deliveryId
+            };
+
+            connection.Execute(sql, data);
         }
     }
 }
