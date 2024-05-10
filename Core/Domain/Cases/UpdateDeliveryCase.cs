@@ -48,6 +48,7 @@ namespace Core.Domain.Cases
             _addressRepository.Update(origin);
             _addressRepository.Update(destiny);
 
+            model.DeliveryId = request.DeliveryId;
             model.Description = request.Description;
             model.Observation = request.Observation;
 
