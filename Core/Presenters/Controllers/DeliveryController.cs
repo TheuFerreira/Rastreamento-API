@@ -18,12 +18,14 @@ namespace Core.Presenters.Controllers
         private readonly IGetUserDeliveriesCase _getUserDeliveriesCase;
         private readonly IUpdateDeliveryCase _updateDeliveryCase;
         private readonly IDeleteDeliveryCase _deleteDeliveryCase;
+        private readonly IGetDeliveryByIdCase _getDeliveryByIdCase;
 
-        public DeliveryController(IGetUserDeliveriesCase getUserDeliveriesCase, IUpdateDeliveryCase updateDeliveryCase, IDeleteDeliveryCase deleteDeliveryCase)
+        public DeliveryController(IGetUserDeliveriesCase getUserDeliveriesCase, IUpdateDeliveryCase updateDeliveryCase, IDeleteDeliveryCase deleteDeliveryCase, IGetDeliveryByIdCase getDeliveryByIdCase)
         {
             _getUserDeliveriesCase = getUserDeliveriesCase;
             _updateDeliveryCase = updateDeliveryCase;
             _deleteDeliveryCase = deleteDeliveryCase;
+            _getDeliveryByIdCase = getDeliveryByIdCase;
         }
 
         [HttpGet("UserDeliveries")]
@@ -57,6 +59,14 @@ namespace Core.Presenters.Controllers
         {
             _deleteDeliveryCase.Execute(id);
             return NoContent();
+        }
+
+        [HttpGet("Delivery/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeliveryInfoResponse))]
+        public IActionResult GetDeliveryById(int id)
+        {
+            DeliveryInfoResponse res = _getDeliveryByIdCase.Execute(id);
+            return Ok(res);
         }
     }
 }
