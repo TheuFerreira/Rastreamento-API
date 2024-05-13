@@ -237,7 +237,7 @@ namespace Core.Infra.Repositories
 
             object data = new
             {
-                delivery = delivery.DeliveryId,
+                deliveryId = delivery.DeliveryId,
                 description = delivery.Description,
                 observation = delivery.Observation,
                 last_update_date = delivery.LastUpdateTime
