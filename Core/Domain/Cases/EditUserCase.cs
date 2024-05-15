@@ -22,13 +22,13 @@ namespace Core.Domain.Cases
             
             if (request == null) throw new BadRequestException("Ocorreu um erro ao tentar editar o usuário! Verifique se todos os dados foram preenchidos corretamente");
            // if (float.IsNaN(request.Id)) throw new BadRequestException("Credenciais inválidas!");
-            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password)) throw new BadRequestException("Credenciais inválidas!");
+            if (string.IsNullOrEmpty(request.Email) /*|| string.IsNullOrEmpty(request.Password) */) throw new BadRequestException("Credenciais inválidas!");
             if (string.IsNullOrEmpty(request.Fullname)) throw new BadRequestException("Informe o nome do usuário!");
             if (request.BirthDate > currentDate || request.BirthDate < maxBirthDate) throw new BadRequestException("Informe uma data de nascimento válida!");
 
             var userAlreadyExists = userRepository.GetByEmail(request.Email);
 
-            if (userAlreadyExists != null) throw new BadRequestException("e-mail já cadastrado!");
+            if (userAlreadyExists != null) throw new BadRequestException("E-mail já cadastrado!");
             var user = new Infra.Models.UserModel(request.Fullname, request.Email, request.Password, request.BirthDate.ToDateTime(TimeOnly.MinValue));
             user.UserId = userId;
 
