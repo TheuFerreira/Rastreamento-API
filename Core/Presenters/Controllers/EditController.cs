@@ -36,7 +36,11 @@ namespace Core.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult EditUser(EditUserRequest request)
         {
-            SignUpResponse response = editUserCase.Execute(request);
+
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity ?? throw new InvalidCredentialException();
+            Claim claimUserId = identity.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            int userId = int.Parse(claimUserId.Value);
+            SignUpResponse response = editUserCase.Execute(request, userId);
             return Ok(response);
             // return Ok(new SignUpResponse());
         }

@@ -6,6 +6,6 @@ namespace Core.Presenters.Cases
     public interface IEditUserCase
         
     {
-        SignUpResponse Execute(EditUserRequest request);
+        SignUpResponse Execute(EditUserRequest request, int userId);
     }
 }
