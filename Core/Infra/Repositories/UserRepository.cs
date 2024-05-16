@@ -96,5 +96,36 @@ namespace Core.Infra.Repositories
             UserModel? model = connection.Query<UserModel>(sql, data).FirstOrDefault();
             return model;
         }
+
+        public UserModel? GetByIdAndPassword(int userId, string password) 
+        {
+            string sql = @"
+                SELECT users.id_user AS UserId
+                FROM users 
+                WHERE users.id_user = @userId AND BINARY users.password = MD5(@password);
+            ";
+
+            object data = new
+            {
+                userId,
+                password
+            };
+
+            UserModel? model = connection.Query<UserModel>(sql, data).FirstOrDefault();
+            return model;
+        }
+
+        public void SetNewPassword(int userId, string CurrentPassword, string NewPassword)
+        {
+            string slq = @"
+            UPDATE users " +
+            "SET password = MD5(@NewPassword)" +
+            "WHERE id_user = @userId AND BINARY users.password = MD5(@CurrentPassword);";
+
+            object data = new { userId, NewPassword, CurrentPassword };
+
+            connection.Query(slq, data);
+
+        }
     }
 }

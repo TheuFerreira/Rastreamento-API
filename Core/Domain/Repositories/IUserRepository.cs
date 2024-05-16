@@ -9,5 +9,7 @@ namespace Core.Domain.Repositories
         void Add(UserModel userModel);
         UserModel? GetById(int userId);
         void Update(UserModel userModel);
+        UserModel? GetByIdAndPassword(int userId, string password);
+        void SetNewPassword(int userId, string currentPassword, string newPassword);
     }
 }
