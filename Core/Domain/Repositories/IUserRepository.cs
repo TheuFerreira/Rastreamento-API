@@ -11,5 +11,6 @@ namespace Core.Domain.Repositories
         void Update(UserModel userModel);
         UserModel? GetByIdAndPassword(int userId, string password);
         void SetNewPassword(int userId, string currentPassword, string newPassword);
+        void UpdatePassword(int userId, string newPassword);
     }
 }

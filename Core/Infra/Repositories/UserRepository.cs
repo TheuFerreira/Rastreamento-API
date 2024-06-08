@@ -125,7 +125,18 @@ namespace Core.Infra.Repositories
             object data = new { userId, NewPassword, CurrentPassword };
 
             connection.Query(slq, data);
+        }
 
+        public void UpdatePassword(int userId, string newPassword)
+        {
+            string slq = @"
+            UPDATE users 
+            SET password = MD5(@NewPassword)
+            WHERE id_user = @userId;
+            ";
+
+            object data = new { userId, newPassword };
+            connection.Query(slq, data);
         }
     }
 }
