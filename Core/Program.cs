@@ -18,11 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 JWTModel jwt = builder.Configuration.GetSection("JWT").Get<JWTModel>();
 
 string connectionString = builder.Configuration.GetConnectionString("MySQL");
-IDbConnection connection = new MySqlConnection(connectionString);
-
 Random rnd = new();
 
-builder.Services.AddSingleton<IDbConnection>(connection);
+builder.Services.AddTransient<IDbConnection>((x) => 
+{
+    IDbConnection connection = new MySqlConnection(connectionString);
+    return connection;
+});
 builder.Services.AddSingleton<JWTModel>(jwt);
 builder.Services.AddSingleton(rnd);
 
