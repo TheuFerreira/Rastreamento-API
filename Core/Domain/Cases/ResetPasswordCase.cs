@@ -33,14 +33,14 @@ Your new password is {newPassword}
 -- Tracky
 ";
 
-            string otherEmail = "";
-            string otherPassword = "";
+            string otherEmail = "tracky@beta.filmotopia.com.br";
+            string otherPassword = "iTf\"$/9FS,*lAus";
             //
             MailMessage mensagemEmail = new(otherEmail, email, "Tracky - Nova Senha", body);
 
-            SmtpClient client = new("smtp.gmail.com", 587);
+            SmtpClient client = new("smtp.titan.email", 587);
             NetworkCredential cred = new(otherEmail, otherPassword);
-            client.EnableSsl = true;
+            client.EnableSsl = false;
             client.Credentials = cred;
             client.UseDefaultCredentials = true;
 
