@@ -18,10 +18,15 @@ var builder = WebApplication.CreateBuilder(args);
 JWTModel jwt = builder.Configuration.GetSection("JWT").Get<JWTModel>();
 
 string connectionString = builder.Configuration.GetConnectionString("MySQL");
-IDbConnection connection = new MySqlConnection(connectionString);
+Random rnd = new();
 
-builder.Services.AddSingleton<IDbConnection>(connection);
+builder.Services.AddTransient<IDbConnection>((x) => 
+{
+    IDbConnection connection = new MySqlConnection(connectionString);
+    return connection;
+});
 builder.Services.AddSingleton<JWTModel>(jwt);
+builder.Services.AddSingleton(rnd);
 
 // Services
 
@@ -53,6 +58,8 @@ builder.Services.AddTransient<IDeleteFromSavedCase, DeleteFromSavedCase>();
 builder.Services.AddTransient<IUpdateDeliveryCase, UpdateDeliveryCase>();
 builder.Services.AddTransient<IDeleteDeliveryCase, DeleteDeliveryCase>();
 builder.Services.AddTransient<IGetDeliveryByIdCase, GetDeliveryByIdCase>();
+builder.Services.AddTransient<IChangePasswordCase, ChangePasswordCase>();
+builder.Services.AddTransient<IResetPasswordCase, ResetPasswordCase>();
 
 // Add services to the container.
 // Isso aqui � para converter DateOnly, foi a forma que achei de lidar com o erro de serialization

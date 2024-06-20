@@ -13,10 +13,12 @@ namespace Core.Presenters.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ISignInCase signInCase;
+        private readonly IResetPasswordCase resetPasswordCase;
 
-        public LoginController(ISignInCase signInCase)
+        public LoginController(ISignInCase signInCase, IResetPasswordCase resetPasswordCase)
         {
             this.signInCase = signInCase;
+            this.resetPasswordCase = resetPasswordCase;
         }
 
         [HttpPost]
@@ -30,5 +32,16 @@ namespace Core.Presenters.Controllers
             SignInResponse result = signInCase.Execute(request);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(ResetPasswordRequest request)
+        {
+            resetPasswordCase.Execute(request.Email);
+            return Ok();
+        }
     }
+
+
 }

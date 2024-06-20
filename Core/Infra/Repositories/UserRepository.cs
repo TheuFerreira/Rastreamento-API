@@ -72,7 +72,7 @@ namespace Core.Infra.Repositories
         public void Update(UserModel user)
         {
             string slq = @"update users " +
-            "set name = @name, email = @email, password = @password, birth_date = @birth_date, updated_at = @updated_at " +
+            "set name = @name, email = @email, password = MD5(@password), birth_date = @birth_date, updated_at = @updated_at " +
             "where id_user = @id_user;";
 
             object data = new { id_user = user.UserId, name = user.FullName, email = user.Email, password = user.Password, birth_date = user.GtBirthDateInDateTimeFormat(), updated_at = DateTime.Now };
@@ -95,6 +95,48 @@ namespace Core.Infra.Repositories
 
             UserModel? model = connection.Query<UserModel>(sql, data).FirstOrDefault();
             return model;
+        }
+
+        public UserModel? GetByIdAndPassword(int userId, string password) 
+        {
+            string sql = @"
+                SELECT users.id_user AS UserId
+                FROM users 
+                WHERE users.id_user = @userId AND BINARY users.password = MD5(@password);
+            ";
+
+            object data = new
+            {
+                userId,
+                password
+            };
+
+            UserModel? model = connection.Query<UserModel>(sql, data).FirstOrDefault();
+            return model;
+        }
+
+        public void SetNewPassword(int userId, string CurrentPassword, string NewPassword)
+        {
+            string slq = @"
+            UPDATE users " +
+            "SET password = MD5(@NewPassword)" +
+            "WHERE id_user = @userId AND BINARY users.password = MD5(@CurrentPassword);";
+
+            object data = new { userId, NewPassword, CurrentPassword };
+
+            connection.Query(slq, data);
+        }
+
+        public void UpdatePassword(int userId, string newPassword)
+        {
+            string slq = @"
+            UPDATE users 
+            SET password = MD5(@NewPassword)
+            WHERE id_user = @userId;
+            ";
+
+            object data = new { userId, newPassword };
+            connection.Query(slq, data);
         }
     }
 }
