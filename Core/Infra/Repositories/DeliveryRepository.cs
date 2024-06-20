@@ -42,10 +42,11 @@ namespace Core.Infra.Repositories
         public bool UserSavedDelivery(int userId, int deliveryId)
         {
             string sql = @"
-                SELECT COUNT(ud.id_user)
-               FROM user_has_delivery as ud
+                 SELECT COUNT(ud.id_user)
+                 FROM user_has_delivery as ud
                  INNER JOIN delivery
-                WHERE ud.id_delivery = @deliveryId AND ud.id_user = @userId AND deleted = 0;
+                 WHERE ud.id_delivery = @deliveryId AND ud.id_user = @userId AND deleted = 0;
+
             ";
             object data = new
             {
@@ -203,7 +204,7 @@ namespace Core.Infra.Repositories
         public IEnumerable<DeliveryModel> GetAllOfUser(int userId)
         {
             string sql = @"
-                SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime, status 
+                SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime, status, created_at AS CreatedAt
                 FROM delivery 
                 WHERE BINARY id_user = @userId AND deleted = 0;
             ";

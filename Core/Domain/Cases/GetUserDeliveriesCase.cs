@@ -48,6 +48,7 @@ namespace Core.Domain.Cases
                     Origin = origin,
                     Status = x.Status,
                     Code = x.Code,
+                    CreatedAt = x.CreatedAt,
                 };
             });
 
