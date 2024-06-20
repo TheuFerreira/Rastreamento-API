@@ -12,6 +12,11 @@ namespace Core.Presenters.Responses
         public int Status { get; set; }
         public string Code { get; set; }
 
+        [JsonPropertyName("created_at")]
+        public DateTime CreatedAt { get; set; }
+
+
+
         [JsonPropertyName("last_update_time")]
         public DateTime LastUpdateTime { get; set; }
 

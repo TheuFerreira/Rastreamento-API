@@ -203,7 +203,7 @@ namespace Core.Infra.Repositories
         public IEnumerable<DeliveryModel> GetAllOfUser(int userId)
         {
             string sql = @"
-                SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime, status 
+                SELECT id_delivery AS DeliveryId, description, address_origin_id AS AddressOriginId, address_destiny_id AS AddressDestinyId, observation, code, last_update_date AS LastUpdateTime, status, created_at AS CreatedAt
                 FROM delivery 
                 WHERE BINARY id_user = @userId AND deleted = 0;
             ";
