@@ -42,9 +42,10 @@ namespace Core.Infra.Repositories
         public bool UserSavedDelivery(int userId, int deliveryId)
         {
             string sql = @"
-                SELECT COUNT(id_user) 
-                FROM user_has_delivery 
-                WHERE id_delivery = @deliveryId AND id_user = @userId AND deleted = 0;
+                SELECT COUNT(ud.id_user)
+               FROM user_has_delivery as ud
+                 INNER JOIN delivery
+                WHERE ud.id_delivery = @deliveryId AND ud.id_user = @userId AND deleted = 0;
             ";
             object data = new
             {
@@ -110,7 +111,7 @@ namespace Core.Infra.Repositories
             @"
                 SELECT D.created_at AS CreatedAt, D.last_update_date AS LastUpdateTime, D.address_destiny_id AS AddressDestinyId, address_origin_id AS AddressOriginId, D.description AS Description 
                 FROM delivery AS D 
-                WHERE D.id_delivery = @Id AND deleted = 0;
+                WHERE D.id_delivery = @Id AND D.deleted = 0;
                     
             ";
 
