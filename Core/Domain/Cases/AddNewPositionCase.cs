@@ -19,34 +19,37 @@ namespace Core.Domain.Cases
             this.addressRepository = addressRepository;
         }
 
-        public void Execute(NewPositionRequest newPositionRequest)
+        public void Execute(IList<NewPositionRequest> newPositionRequests)
         {
-            _ = deliveryRepository.GetById(newPositionRequest.DeliveryId) ?? throw new NotFoundException();
-
-            int? addressId = null;
-            NewPositionAddressRequest? addressResponse = newPositionRequest.Address;
-            if (addressResponse != null )
+            foreach (NewPositionRequest newPositionRequest in newPositionRequests)
             {
-                AddressModel address = new()
+                _ = deliveryRepository.GetById(newPositionRequest.DeliveryId) ?? throw new NotFoundException();
+
+                int? addressId = null;
+                NewPositionAddressRequest? addressResponse = newPositionRequest.Address;
+                if (addressResponse != null)
                 {
-                    CEP = addressResponse.CEP,
-                    City = addressResponse.City,
-                    UF = addressResponse.UF,
+                    AddressModel address = new()
+                    {
+                        CEP = addressResponse.CEP,
+                        City = addressResponse.City,
+                        UF = addressResponse.UF,
+                    };
+                    addressId = addressRepository.Add(address);
+                }
+
+                PositionDeliveryModel model = new()
+                {
+                    AddressId = addressId,
+                    CreatedAt = DateTime.UtcNow,
+                    DeliveryId = newPositionRequest.DeliveryId,
+                    Latitude = newPositionRequest.Latitude,
+                    Longitude = newPositionRequest.Longitude,
                 };
-                addressId = addressRepository.Add(address);
+                positionDeliveryRepository.Insert(model);
+
+                deliveryRepository.UpdateLastUpdateTime(newPositionRequest.DeliveryId, DateTime.UtcNow);
             }
-
-            PositionDeliveryModel model = new()
-            {
-                AddressId = addressId,
-                CreatedAt = DateTime.UtcNow,
-                DeliveryId = newPositionRequest.DeliveryId,
-                Latitude = newPositionRequest.Latitude,
-                Longitude = newPositionRequest.Longitude,
-            };
-            positionDeliveryRepository.Insert(model);
-
-            deliveryRepository.UpdateLastUpdateTime(newPositionRequest.DeliveryId, DateTime.UtcNow);
         }
     }
 }
