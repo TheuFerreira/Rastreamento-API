@@ -78,7 +78,7 @@ namespace Core.Infra.Repositories
                 SELECT d.id_delivery AS DeliveryId, d.description, d.address_origin_id AS AddressOriginId, d.address_destiny_id AS AddressDestinyId, d.observation, d.code, d.last_update_date AS LastUpdateTime, d.status as Status
                 FROM delivery AS d
                 INNER JOIN user_has_delivery AS ud ON ud.id_delivery = d.id_delivery
-                WHERE ud.id_user = @userId AND deleted = 0;
+                WHERE ud.id_user = @userId AND d.deleted = 0;
             ";
 
             object data = new
