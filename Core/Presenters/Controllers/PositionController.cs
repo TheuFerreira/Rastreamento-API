@@ -1,6 +1,5 @@
 ﻿using Core.Presenters.Cases;
 using Core.Presenters.Requests;
-using Core.Presenters.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,13 +21,13 @@ namespace Core.Presenters.Controllers
 
         [HttpPost]
         [Route("NewPosition")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignUpResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult NewPosition(NewPositionRequest request)
+        public IActionResult NewPosition(IList<NewPositionRequest> requests)
         {
-            addNewPositionCase.Execute(request);
+            addNewPositionCase.Execute(requests);
             return Ok();
         }
     }
