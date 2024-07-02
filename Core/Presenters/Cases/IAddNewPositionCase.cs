@@ -4,6 +4,6 @@ namespace Core.Presenters.Cases
 {
     public interface IAddNewPositionCase
     {
-        void Execute(NewPositionRequest newPositionRequest);
+        void Execute(IList<NewPositionRequest> newPositionRequest);
     }
 }
