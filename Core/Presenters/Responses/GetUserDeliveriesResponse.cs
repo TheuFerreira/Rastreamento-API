@@ -10,12 +10,10 @@ namespace Core.Presenters.Responses
         public GetUserDeliveriesAddressResponse Origin { get; set; }
         public GetUserDeliveriesAddressResponse Destiny { get; set; }
         public int Status { get; set; }
-        public string Code { get; set; }
+        public string Code { get; set; } = string.Empty;
 
         [JsonPropertyName("created_at")]
         public DateTime CreatedAt { get; set; }
-
-
 
         [JsonPropertyName("last_update_time")]
         public DateTime LastUpdateTime { get; set; }

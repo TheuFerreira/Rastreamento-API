@@ -33,7 +33,6 @@ namespace Core.Domain.Cases
             {
                 FullName = request.Fullname,
                 Email = request.Email,
-                Password = request.Password,
                 BirthDate = request.BirthDate.ToDateTime(TimeOnly.MinValue),
                 UserId = userId
             };

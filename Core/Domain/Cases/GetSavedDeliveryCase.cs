@@ -11,7 +11,7 @@ namespace Core.Domain.Cases
         private readonly IDeliveryRepository repository;
         private readonly IAddressRepository addressRepository;
 
-        public GetSavedDeliveryCase(IDeliveryRepository repository, IAddressRepository addressRepository = null)
+        public GetSavedDeliveryCase(IDeliveryRepository repository, IAddressRepository addressRepository)
         {
             this.repository = repository;
             this.addressRepository = addressRepository;
