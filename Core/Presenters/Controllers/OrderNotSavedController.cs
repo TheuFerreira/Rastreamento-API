@@ -35,7 +35,7 @@ namespace Core.Presenters.Controllers
 
         [HttpPost]
         [Route("Save/{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent, Type = null)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

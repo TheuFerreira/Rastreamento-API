@@ -16,6 +16,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 JWTModel jwt = builder.Configuration.GetSection("JWT").Get<JWTModel>();
+EmailSettingsModel email = builder.Configuration.GetSection("Email").Get<EmailSettingsModel>();
 
 string connectionString = builder.Configuration.GetConnectionString("MySQL");
 Random rnd = new();
@@ -26,11 +27,13 @@ builder.Services.AddTransient<IDbConnection>((x) =>
     return connection;
 });
 builder.Services.AddSingleton<JWTModel>(jwt);
+builder.Services.AddSingleton<EmailSettingsModel>(email);
 builder.Services.AddSingleton(rnd);
 
 // Services
 
 builder.Services.AddTransient<IGenerateDeliveryCodeService, GenerateDeliveryCodeService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
