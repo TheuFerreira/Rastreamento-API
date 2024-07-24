@@ -14,11 +14,13 @@ namespace Core.Presenters.Controllers
     {
         private readonly ISignInCase signInCase;
         private readonly IResetPasswordCase resetPasswordCase;
+        private readonly ILoginRefreshTokenCase loginRefreshTokenCase;
 
-        public LoginController(ISignInCase signInCase, IResetPasswordCase resetPasswordCase)
+        public LoginController(ISignInCase signInCase, IResetPasswordCase resetPasswordCase, ILoginRefreshTokenCase loginRefreshTokenCase)
         {
             this.signInCase = signInCase;
             this.resetPasswordCase = resetPasswordCase;
+            this.loginRefreshTokenCase = loginRefreshTokenCase;
         }
 
         [HttpPost]
@@ -36,12 +38,26 @@ namespace Core.Presenters.Controllers
         [HttpPost]
         [Route("ResetPassword")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignInResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult ResetPassword(ResetPasswordRequest request)
         {
             resetPasswordCase.Execute(request.Email);
             return Ok();
         }
+
+        [HttpPost]
+        [Route("RefreshToken")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginRefreshTokenRequest))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult RefreshToken(LoginRefreshTokenRequest request)
+        {
+            var response = loginRefreshTokenCase.Execute(request);
+            return Ok(response);
+        }
     }
-
-
 }

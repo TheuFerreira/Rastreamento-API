@@ -5,6 +5,7 @@ using Core.Domain.Services;
 using Core.Infra.Repositories;
 using Core.Infra.Services;
 using Core.Presenters.Cases;
+using Core.Presenters.Controllers;
 using Core.Presenters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,7 @@ builder.Services.AddSingleton(rnd);
 
 builder.Services.AddTransient<IGenerateDeliveryCodeService, GenerateDeliveryCodeService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IJWTService, JWTService>();
 
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -63,6 +65,7 @@ builder.Services.AddTransient<IDeleteDeliveryCase, DeleteDeliveryCase>();
 builder.Services.AddTransient<IGetDeliveryByIdCase, GetDeliveryByIdCase>();
 builder.Services.AddTransient<IChangePasswordCase, ChangePasswordCase>();
 builder.Services.AddTransient<IResetPasswordCase, ResetPasswordCase>();
+builder.Services.AddTransient<ILoginRefreshTokenCase, LoginRefreshTokenCase>();
 
 // Add services to the container.
 // Isso aqui � para converter DateOnly, foi a forma que achei de lidar com o erro de serialization

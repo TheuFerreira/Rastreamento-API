@@ -5,30 +5,41 @@ using Core.Infra.Models;
 using Core.Presenters.Cases;
 using Core.Presenters.Requests;
 using Core.Presenters.Responses;
+using System.Security.Authentication;
 using System.Text;
 
 namespace Core.Domain.Cases
 {
-    public class SignInCase : ISignInCase
+    public class LoginRefreshTokenCase : ILoginRefreshTokenCase
     {
-        private readonly IUserRepository userRepository;
-        private readonly JWTModel jwtModel;
         private readonly IJWTService jWTService;
+        private readonly JWTModel jwtModel;
+        private readonly IUserRepository userRepository;
 
-        public SignInCase(IUserRepository userRepository, JWTModel jwtModel, IJWTService jWTService)
+        public LoginRefreshTokenCase(IJWTService jWTService, JWTModel jwtModel, IUserRepository userRepository)
         {
-            this.userRepository = userRepository;
-            this.jwtModel = jwtModel;
             this.jWTService = jWTService;
+            this.jwtModel = jwtModel;
+            this.userRepository = userRepository;
         }
 
-        public SignInResponse Execute(SignInRequest request)
+        public SignInResponse Execute(LoginRefreshTokenRequest request)
         {
-            UserModel model = userRepository.GetByEmailAndPassword(request.Email, request.Password)
-                ?? throw new NotFoundException();
-
             DateTime expiration = DateTime.UtcNow.AddMinutes(jwtModel.Expiration);
             byte[] key = Encoding.UTF8.GetBytes(jwtModel.Key);
+
+            int userId;
+            try
+            {
+                userId = jWTService.ValidateToken(request.RefreshToken, key);
+            }
+            catch (Exception)
+            {
+                throw new InvalidCredentialException();
+            }
+
+            UserModel model = userRepository.GetById(userId) ?? throw new NotFoundException();
+
             string token = jWTService.BuildToken(expiration, model.UserId, key);
 
             DateTime expirationRefreshToken = DateTime.UtcNow.AddHours(jwtModel.Expiration);
